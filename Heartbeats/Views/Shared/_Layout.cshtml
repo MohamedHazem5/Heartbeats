@@ -173,7 +173,7 @@
                             <a class="nav-link" href="service.html">استشارة طبيب</a>
                         </li>
                     <li class="nav-item @@contact">
-                        <a class="nav-link" href="contact.html">تواصل معنا</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Contact">تواصل معنا</a>
                     </li>
                         <li class="nav-item @@about">
                             <a class="nav-link" asp-controller="Home" asp-action="About">من نحن</a>
@@ -243,13 +243,13 @@
                 </div>
                 <ul class="footer-bottom-link">
                     <li>
-                        <a href="index.html">الرئيسية</a>
+                        <a asp-controller="Home" asp-action="Index">الرئيسية</a>
                     </li>
                     <li>
-                        <a href="about.html">من نحن</a>
+                        <a asp-controller="Home" asp-action="About">من نحن</a>
                     </li>
                     <li>
-                        <a href="contact.html">تواصل معنا</a>
+                        <a asp-controller="Home" asp-action="Contact">تواصل معنا</a>
                     </li>
                 </ul>
             </div>
