@@ -5,13 +5,13 @@
 @inject UserManager<User> UserManager
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="auto">
 <head>
 
     <base href="~/" />
     <!-- ** Basic Page Needs ** -->
     <meta charset="utf-8">
-    <title>Medic | Medical HTML Template</title>
+    <title>HeartBeats</title>
 
     <!-- ** Mobile Specific Metas ** -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -94,41 +94,42 @@
     <section class="header-uper">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-xl-4 col-lg-3">
-                    <div class="logo">
-                        <a href="index.html">
-                            <img loading="lazy" class="img-fluid" src="images/logo.png" alt="logo">
-                        </a>
-                    </div>
-                </div>
                 <div class="col-xl-8 col-lg-9">
                     <div class="right-side">
                         <ul class="contact-info pl-0 mb-4 mb-md-0">
-                            <li class="item text-left">
+                            <li class="item text-right">
                                 <div class="icon-box">
                                     <i class="far fa-envelope"></i>
                                 </div>
-                                <strong>Email</strong>
+                                <strong>الايميل</strong>
                                 <br>
-                                <a href="mailto:info@medic.com">
-                                    <span>info@medic.com</span>
+                                    <a href="mailto:info@heartbeat.com">
+                                    <span>info@heartbeat.com</span>
                                 </a>
                             </li>
-                            <li class="item text-left">
+                            <li class="item text-right">
                                 <div class="icon-box">
                                     <i class="fas fa-phone"></i>
                                 </div>
-                                <strong>Call Now</strong>
+                                <strong>اتصل الان</strong>
                                 <br>
-                                <span>+ (88017) - 123 - 4567</span>
+                                <span>+ (20) 1090 9884 6</span>
                             </li>
                         </ul>
-                        <div class="link-btn text-center text-lg-right">
-                            <a href="contact.html" class="btn-style-one">Appoinment</a>
+                        <div class="link-btn text-center text-lg-right mr-5">
+                            <a href="contact.html" class="btn-style-one">تسجيل الدخول</a>
+                        </div>
+                    </div>
+
+                </div>
+                    <div class="col-xl-4 col-lg-3">
+                        <div class="logo">
+                            <a href="index.html">
+                                <img loading="lazy" class="img-fluid" src="images/logo.png" alt="logo">
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
     <!--Header Upper-->
@@ -140,29 +141,16 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarLinks">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item @@about">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item @@service">
-                        <a class="nav-link" href="service.html">Service</a>
-                    </li>
-                    <li class="nav-item @@gallery">
-                        <a class="nav-link" href="gallery.html">Gallery</a>
-                    </li>
-                    <li class="nav-item @@team">
-                        <a class="nav-link" href="team.html">Team</a>
-                    </li>
-                    <li class="nav-item @@appointment">
-                        <a class="nav-link" href="appointment.html">Appointment</a>
-                    </li>
+                <ul class="navbar-nav ml-4">
+                    
+                   
+                  
+                   
+                   
                     <li class="nav-item dropdown @@blogs">
-                        <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blogs</a>
+                        <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
 
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+@*                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item @@blog" href="blog.html">Blog</a></li>
                             <li><a class="dropdown-item @@blogDetails" href="blog-details.html">Blog Details</a></li>
                             <li class="dropdown dropdown-submenu dropright">
@@ -173,11 +161,26 @@
                                     <li><a class="dropdown-item" href="index.html">Submenu 02</a></li>
                                 </ul>
                             </li>
-                        </ul>
+                        </ul> *@
                     </li>
+                        <li class="nav-item @@team">
+                            <a class="nav-link" href="team.html">فحص مرض السكر</a>
+                        </li>
+                        <li class="nav-item @@gallery">
+                            <a class="nav-link" href="gallery.html">احجز طبيبك</a>
+                        </li>
+                        <li class="nav-item @@service">
+                            <a class="nav-link" href="service.html">استشارة طبيب</a>
+                        </li>
                     <li class="nav-item @@contact">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="contact.html">تواصل معنا</a>
                     </li>
+                        <li class="nav-item @@about">
+                            <a class="nav-link" href="about.html">من نحن</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index.html">الرئيسية</a>
+                        </li>
                 </ul>
             </div>
         </div>
@@ -203,21 +206,21 @@
                                     </a>
                                 </figure>
                             </div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, temporibus?</p>
+                            <p>خدمات رعاية صحية مختلفة تناسب احتياجاتك</p>
                             <ul class="location-link">
                                 <li class="item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <p>Modamba, NY 80021, United States</p>
+                                    <p>Alexandria, Egypt</p>
                                 </li>
                                 <li class="item">
                                     <i class="far fa-envelope" aria-hidden="true"></i>
                                     <a href="mailto:support@medic.com">
-                                        <p>support@medic.com</p>
+                                        <p>info@heartbeat.com</p>
                                     </a>
                                 </li>
                                 <li class="item">
                                     <i class="fas fa-phone" aria-hidden="true"></i>
-                                    <p>(88017) +123 4567</p>
+                                    <p>(20) 1090 5614</p>
                                 </li>
                             </ul>
                             <ul class="list-inline social-icons">
@@ -228,86 +231,25 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-5 mb-3 mb-md-0">
-                        <h2>Services</h2>
-                        <ul class="menu-link">
-                            <li>
-                                <a href="service.html">
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>Orthopadic Liabilities
-                                </a>
-                            </li>
-                            <li>
-                                <a href="service.html">
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>Dental Clinic
-                                </a>
-                            </li>
-                            <li>
-                                <a href="service.html">
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>Dormamu Clinic
-                                </a>
-                            </li>
-                            <li>
-                                <a href="service.html">
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>Psycological Clinic
-                                </a>
-                            </li>
-                            <li>
-                                <a href="service.html">
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>Gynaecological Clinic
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-7">
-                        <div class="social-links">
-                            <h2>Recent Posts</h2>
-                            <ul>
-                                <li class="item">
-                                    <div class="media">
-                                        <div class="media-left mr-3">
-                                            <a href="blog-details.html">
-                                                <img loading="lazy" src="images/blog/post-thumb-small.jpg" alt="post-thumb">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5><a href="blog-details.html">A lesson adip isicing</a></h5>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, dolorem.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="item">
-                                    <div class="media">
-                                        <div class="media-left mr-3">
-                                            <a href="blog-details.html">
-                                                <img loading="lazy" src="images/blog/post-thumb-small.jpg" alt="post-thumb">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5><a href="blog-details.html">How to make an event</a></h5>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, dolorem.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                   
+                   
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <div class="container clearfix">
                 <div class="copyright-text">
-                    <p>&copy; Copyright 2021. Designed &amp; Developed by <a href="https://themefisher.com/">Themefisher</a></p>
+                    <p>&copy; Copyright 2025. Designed &amp; Developed by <a href="https://www.heartbeats.com">HeartBeats</a></p>
                 </div>
                 <ul class="footer-bottom-link">
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="index.html">الرئيسية</a>
                     </li>
                     <li>
-                        <a href="about.html">About</a>
+                        <a href="about.html">من نحن</a>
                     </li>
                     <li>
-                        <a href="contact.html">Contact</a>
+                        <a href="contact.html">تواصل معنا</a>
                     </li>
                 </ul>
             </div>
