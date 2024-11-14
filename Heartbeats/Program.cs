@@ -1,13 +1,17 @@
 using Heartbeats.Extentions;
+using Models;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add service to launch the chatbot
+builder.Services.StartChatbot();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.AddIdentityService();
-
 
 var app = builder.Build();
 
