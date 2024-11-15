@@ -6,7 +6,7 @@ import chainlit as cl
 @cl.on_chat_start
 async def on_chat_start():
     api_key = os.environ.get("GOOGLE_API_KEY")
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",api_key=api_key)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",api_key="AIzaSyBDoLFQh3AjmSOSgR21rg0t8yT8a7cUU38")
     prompt = ChatPromptTemplate.from_messages(
         [
             (
