@@ -42,7 +42,15 @@
 
     <!--Favicon-->
     <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <style>
 
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
     <div class="page-wrapper">
@@ -91,47 +99,69 @@
     </div>
     <!--header top-->
     <!--Header Upper-->
-    <section class="header-uper">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-8 col-lg-9">
-                    <div class="right-side">
-                        <ul class="contact-info pl-0 mb-4 mb-md-0">
-                            <li class="item text-right">
-                                <div class="icon-box">
-                                    <i class="far fa-envelope"></i>
-                                </div>
-                                <strong>الايميل</strong>
-                                <br>
-                                    <a href="mailto:info@heartbeat.com">
-                                    <span>info@heartbeat.com</span>
-                                </a>
-                            </li>
-                            <li class="item text-right">
-                                <div class="icon-box">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                                <strong>اتصل الان</strong>
-                                <br>
-                                <span>+ (20) 1090 9884 6</span>
-                            </li>
-                        </ul>
-                        <div class="link-btn text-center text-lg-right mr-5">
-                            <a asp-controller="Account" asp-action="Login" class="btn-style-one">تسجيل الدخول</a>
-                        </div>
-                    </div>
-
-                </div>
-                    <div class="col-xl-4 col-lg-3">
+        <section class="header-uper">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Logo Section -->
+                    <div class="col-xl-4 col-lg-3 order-lg-2 text-right">
                         <div class="logo">
                             <a href="index.html">
                                 <img loading="lazy" class="img-fluid" src="images/logo.png" alt="logo">
                             </a>
                         </div>
                     </div>
+
+                    <!-- Right Side Section -->
+                    <div class="col-xl-8 col-lg-9 order-lg-1">
+                        <div class="right-side d-flex justify-content-between align-items-center">
+                            <ul class="contact-info pl-0 mb-4 mb-md-0">
+                                <li class="item text-right">
+                                    <div class="icon-box">
+                                        <i class="far fa-envelope"></i>
+                                    </div>
+                                    <strong>الايميل</strong>
+                                    <br>
+                                    <a href="mailto:info@heartbeat.com">
+                                        <span>info@heartbeat.com</span>
+                                    </a>
+                                </li>
+                                <li class="item text-right">
+                                    <div class="icon-box">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <strong>اتصل الان</strong>
+                                    <br>
+                                    <span>+ (20) 1090 9884 6</span>
+                                </li>
+                            </ul>
+                            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Patient") || User.IsInRole("Doctor")))
+                            {
+                                <div class="user-info d-flex align-items-center">
+                                   
+                                    <!-- Logout Button -->
+                                    <div class="link-btn text-center text-lg-right ml-3 pr-4">
+                                        <a asp-controller="Account" asp-action="Logout" class="btn-style-one">تسجيل الخروج</a>
+                                    </div>
+                                    <!-- Profile Image -->
+                                    <img src="@(!string.IsNullOrEmpty(UserManager.GetUserAsync(User).Result.ImgaeUrl)
+                                    ? UserManager.GetUserAsync(User).Result.ImgaeUrl
+                                    : "/images/default_image.jpg")"
+                                         alt="Profile Image" class="profile-image rounded-circle" />
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="link-btn text-center text-lg-right ml-3">
+                                    <a asp-controller="Account" asp-action="Login" class="btn-style-one">تسجيل الدخول</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
-        </div>
-    </section>
+            </div>
+        </section>
+
     <!--Header Upper-->
     <!--Main Header-->
     <nav class="navbar navbar-expand-lg navbar-dark">
