@@ -11,6 +11,7 @@ namespace DAL.Data
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DbSet<Specialty> Specialties { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
