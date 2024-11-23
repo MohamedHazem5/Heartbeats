@@ -40,11 +40,11 @@ namespace Heartbeats.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(int id)
         {
             ViewBag.Specialties = new SelectList(_context.Specialties.ToList(), "Id", "Name");
 
-            return View(new DoctorDto());
+            return View(new DoctorDto() { UserId = id });
         }
 
         [HttpPost]
