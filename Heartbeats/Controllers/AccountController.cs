@@ -74,7 +74,7 @@ namespace Heartbeats.Controllers
 
             await _signInManager.SignInAsync(user, true);
 
-            return registerDto.Role.Equals("Doctor", StringComparison.OrdinalIgnoreCase) ? RedirectToAction("Register", "Doctor") : RedirectToAction("Index", "Home");
+            return registerDto.Role.Equals("Doctor", StringComparison.OrdinalIgnoreCase) ? RedirectToAction("Register", "Doctor", user.Id) : RedirectToAction("Index", "Home");
             //return RedirectToAction("Index", "Home");
         }
 
