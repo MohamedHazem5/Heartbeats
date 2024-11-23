@@ -4,7 +4,7 @@
     @foreach (var specialty in Model)
     {
         <div class="specialty-card">
-            <a asp-controller="Doctors" asp-action="GetDoctorBySpecialtyId" asp-route-id="@specialty.Id" class="specialty-link">
+            <a asp-controller="Doctor" asp-action="GetBySpecialtyId" asp-route-id="@specialty.Id" class="specialty-link">
                 <img src="@specialty.ImageUrl" alt="@specialty.Name" class="specialty-image" />
                 <div class="specialty-name">@specialty.Name</div>
             </a>

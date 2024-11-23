@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Models.Dtos.DoctorDetailsDto>
+
+<section class="doctors-section py-5">
+    <div class="container">
+        <h3 class="text-center mb-4">الأطباء المتخصصون</h3>
+        <div class="row">
+            @foreach (var doctor in Model)
+            {
+                <div class="col-12 mb-4">
+                    <div class="card shadow-lg">
+                        <div class="row no-gutters">
+                            <!-- Doctor Image -->
+                            <div class="col-md-4 text-center d-flex align-items-center justify-content-center p-3">
+                                <img src="@(!string.IsNullOrEmpty(doctor.ImageUrl) ? doctor.ImageUrl : "/images/default_image.jpg")"
+                                     class="img-fluid rounded doctor-image" alt="@doctor.UserName"
+                                     style="max-width: 100%; max-height: 100px;object-fit: cover;border-radius: 10px"
+                                     >
+                            </div>
+                            <!-- Doctor Details -->
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">د. @doctor.UserName</h5>
+                                    <p class="card-text">
+                                        <strong>التخصص: </strong>@doctor.SpecialtyName
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>نبذة: </strong>@doctor.Bio
+                                    </p>                                    
+                                </div>
+                            </div>                           
+                        </div>
+                        <div class="card-footer" dir="ltr">
+                            <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-primary">حجز موعد</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
