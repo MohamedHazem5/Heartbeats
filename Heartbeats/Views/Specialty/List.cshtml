@@ -1,0 +1,188 @@
+﻿@model IEnumerable<Specialty>
+
+@{
+    ViewBag.Title = "التخصصات"; // Model name in Arabic
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between">
+        <h2 class="text-right">التخصصات</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+            إضافة
+        </button>
+    </div>
+    <hr />
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم التخصص</th>
+                <th>رابط الصورة</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <img src="@item.ImageUrl" alt="@item.Name" style="width: 50px; height: 50px;" />
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                                data-id="@item.Id" data-name="@item.Name" data-imageurl="@item.ImageUrl">
+                            تعديل
+                        </button>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                data-id="@item.Id" data-name="@item.Name">
+                            حذف
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="/Specialty/Add">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">إضافة تخصص جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">اسم التخصص</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="ImageUrl" class="form-label">رابط الصورة</label>
+                        <input type="text" class="form-control" id="ImageUrl" name="ImageUrl" required />
+                    </div>
+                    <div class="mb-3 text-center">
+                        <!-- Image Preview -->
+                        <img id="addImagePreview" src="" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd; display: none;" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="/Specialty/Edit">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">تعديل التخصص</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editId" name="Id" />
+                    <div class="mb-3">
+                        <label for="editName" class="form-label">اسم التخصص</label>
+                        <input type="text" class="form-control" id="editName" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editImageUrl" class="form-label">رابط الصورة</label>
+                        <input type="text" class="form-control" id="editImageUrl" name="ImageUrl" required />
+                    </div>
+                    <div class="mb-3 text-center">
+                        <!-- Image Preview -->
+                        <img id="editImagePreview" src="" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd;" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تعديل</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="/Specialty/Delete">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">تحذير</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف <span id="deleteName"></span>؟</p>
+                    <input type="hidden" id="deleteId" name="Id" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* Add Script *@
+<script>
+    // Add event listener for the ImageUrl field in the Add Modal
+    document.getElementById('ImageUrl').addEventListener('input', function () {
+        var imageUrl = this.value; // Get the URL from the input field
+        var imagePreview = document.getElementById('addImagePreview');
+
+        // Check if the URL is valid (basic validation)
+        if (imageUrl.trim() !== "") {
+            imagePreview.src = imageUrl; // Set the src of the preview image
+            imagePreview.style.display = 'inline'; // Show the preview image
+        } else {
+            imagePreview.style.display = 'none'; // Hide the preview image if URL is empty
+        }
+    });
+</script>
+@* Edit Script *@
+<script>
+    // Function to handle modal show and populate data
+    var editModal = document.getElementById('editModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+        var imageUrl = button.getAttribute('data-imageurl');
+
+        // Populate fields
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editImageUrl').value = imageUrl;
+
+        // Set the image preview
+        var imagePreview = document.getElementById('editImagePreview');
+        imagePreview.src = imageUrl;
+
+        // Add event listener for live URL updates
+        var imageUrlInput = document.getElementById('editImageUrl');
+        imageUrlInput.addEventListener('input', function () {
+            imagePreview.src = this.value;
+        });
+    });
+</script>
+@* Delete Script *@
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+        deleteModal.querySelector('#deleteId').value = id;
+        deleteModal.querySelector('#deleteName').textContent = name;
+    });
+</script>

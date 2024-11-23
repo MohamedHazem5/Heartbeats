@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Specialty>
+
+<div class="specialties-container">
+    @foreach (var specialty in Model)
+    {
+        <div class="specialty-card">
+            <a asp-controller="Doctors" asp-action="GetDoctorBySpecialtyId" asp-route-id="@specialty.Id" class="specialty-link">
+                <img src="@specialty.ImageUrl" alt="@specialty.Name" class="specialty-image" />
+                <div class="specialty-name">@specialty.Name</div>
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .specialties-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .specialty-card {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 200px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .specialty-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .specialty-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .specialty-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .specialty-name {
+        font-size: 1.2em;
+        font-weight: bold;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border-top: 1px solid #ccc;
+    }
+</style>
