@@ -12,6 +12,8 @@ namespace DAL.Data
     {
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

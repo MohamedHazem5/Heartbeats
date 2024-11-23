@@ -143,8 +143,8 @@
                                         <a asp-controller="Account" asp-action="Logout" class="btn-style-one">تسجيل الخروج</a>
                                     </div>
                                     <!-- Profile Image -->
-                                    <img src="@(!string.IsNullOrEmpty(UserManager.GetUserAsync(User).Result.ImgaeUrl)
-                                    ? UserManager.GetUserAsync(User).Result.ImgaeUrl
+                                    <img src="@(!string.IsNullOrEmpty(UserManager.GetUserAsync(User).Result.ImageUrl)
+                                    ? UserManager.GetUserAsync(User).Result.ImageUrl
                                     : "/images/default_image.jpg")"
                                          alt="Profile Image" class="profile-image rounded-circle" />
 

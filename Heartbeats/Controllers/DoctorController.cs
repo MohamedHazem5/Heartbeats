@@ -31,7 +31,7 @@ namespace Heartbeats.Controllers
                 {
                     Id = doc.Id,
                     UserName = doc.User.Name,
-                    ImageUrl = doc.User.ImgaeUrl,
+                    ImageUrl = doc.User.ImageUrl,
                     Bio = doc.Bio,
                     SpecialtyName = doc.Specialty.Name
                 }).ToList();
