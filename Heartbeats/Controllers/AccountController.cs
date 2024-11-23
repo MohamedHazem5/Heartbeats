@@ -24,7 +24,7 @@ namespace Heartbeats.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDto loginDto) 
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid) return View(loginDto);
             var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
@@ -64,7 +64,6 @@ namespace Heartbeats.Controllers
                 Email = registerDto.Email,
                 Name = registerDto.Name,
                 EmailConfirmed = false,
-
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -74,9 +73,10 @@ namespace Heartbeats.Controllers
             await _userManager.AddToRoleAsync(user, registerDto.Role);
 
             await _signInManager.SignInAsync(user, true);
-            return RedirectToAction("Index", "Home");
-        }
 
+            return registerDto.Role.Equals("Doctor", StringComparison.OrdinalIgnoreCase) ? RedirectToAction("Register", "Doctor") : RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
+        }
 
         public async Task<IActionResult> Logout()
         {
