@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Models.Dtos.DoctorDetailsDto>
 
-<section class="doctors-section py-5">
+<section class="doctors-section py-5" dir="rtl">
     <div class="container">
         <h3 class="text-center mb-4">الأطباء المتخصصون</h3>
         <div class="row">
@@ -17,7 +17,7 @@
                                      >
                             </div>
                             <!-- Doctor Details -->
-                            <div class="col-md-8">
+                            <div class="col-md-8 text-right">
                                 <div class="card-body">
                                     <h5 class="card-title">د. @doctor.UserName</h5>
                                     <p class="card-text">
@@ -38,3 +38,14 @@
         </div>
     </div>
 </section>
+<style>
+
+    .bg-primary {
+        background-color: #48bdc5 !important;
+    }
+
+    .btn-primary {
+        background-color: #48bdc5 !important;
+        border-color: #48bdc5 !important;
+    }
+</style>
