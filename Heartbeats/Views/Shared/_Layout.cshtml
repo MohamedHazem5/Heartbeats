@@ -3,7 +3,19 @@
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@{
+    var currentUser = UserManager.GetUserAsync(User).Result;
 
+    bool isAuthenticatedAndInRole = SignInManager.IsSignedIn(User) &&
+                                     (User.IsInRole("Patient") || User.IsInRole("Doctor"));
+
+    bool IsAuthAndAdmin = SignInManager.IsSignedIn(User) &&
+                                     (User.IsInRole("Admin"));
+    string profileImageUrl = !string.IsNullOrEmpty(currentUser?.ImageUrl)
+        ? currentUser.ImageUrl
+        : "/images/default_image.jpg";
+
+}
 <!DOCTYPE html>
 <html lang="ar" dir="auto">
 <head>
@@ -49,6 +61,30 @@
             height: 40px;
             margin-right: 10px;
             object-fit: cover;
+        }
+        /* RTL support for navbar */
+        [dir="rtl"] .navbar-nav {
+            padding-right: 0;
+        }
+
+        [dir="rtl"] .dropdown-menu {
+            text-align: right;
+        }
+
+        [dir="rtl"] .navbar-nav .nav-link {
+            padding-right: 0;
+            padding-left: 0.5rem;
+        }
+
+        /* Fix spacing for RTL navbar */
+        [dir="rtl"] .ms-auto {
+            margin-right: auto !important;
+            margin-left: 0 !important;
+        }
+
+        [dir="rtl"] .me-auto {
+            margin-left: auto !important;
+            margin-right: 0 !important;
         }
     </style>
 </head>
@@ -105,7 +141,7 @@
                     <!-- Logo Section -->
                     <div class="col-xl-4 col-lg-3 order-lg-2 text-right">
                         <div class="logo">
-                            <a href="index.html">
+                            <a asp-controller="Home" asp-action="Index">
                                 <img loading="lazy" class="img-fluid" src="images/logo.png" alt="logo">
                             </a>
                         </div>
@@ -134,7 +170,7 @@
                                     <span>+ (20) 1090 9884 6</span>
                                 </li>
                             </ul>
-                            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Patient") || User.IsInRole("Doctor")))
+                            @if (isAuthenticatedAndInRole || IsAuthAndAdmin)
                             {
                                 <div class="user-info d-flex align-items-center">
 
@@ -143,9 +179,7 @@
                                         <a asp-controller="Account" asp-action="Logout" class="btn-style-one">تسجيل الخروج</a>
                                     </div>
                                     <!-- Profile Image -->
-                                    <img src="@(!string.IsNullOrEmpty(UserManager.GetUserAsync(User).Result.ImageUrl)
-                                    ? UserManager.GetUserAsync(User).Result.ImageUrl
-                                    : "/images/default_image.jpg")"
+                                    <img src="@profileImageUrl"
                                          alt="Profile Image" class="profile-image rounded-circle" />
 
                                 </div>
@@ -164,53 +198,59 @@
 
         <!--Header Upper-->
         <!--Main Header-->
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark" dir="rtl">
             <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler ms-auto" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarLinks">
-                    <ul class="navbar-nav ml-4">
+                    <ul class="navbar-nav me-auto">
 
-
-
-
-
-                        <li class="nav-item dropdown @@blogs">
-                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
-
-                            @*                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item @@blog" href="blog.html">Blog</a></li>
-                            <li><a class="dropdown-item @@blogDetails" href="blog-details.html">Blog Details</a></li>
-                            <li class="dropdown dropdown-submenu dropright">
-                            <a class="dropdown-item dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sub Menu</a>
-
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="index.html">Submenu 01</a></li>
-                            <li><a class="dropdown-item" href="index.html">Submenu 02</a></li>
-                            </ul>
+                        @if (IsAuthAndAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">الصفحة الرئيسية</a>
                             </li>
-                            </ul> *@
-                        </li>
-                        <li class="nav-item @@team">
-                            <a class="nav-link" href="team.html">فحص مرض السكر</a>
-                        </li>
-                        <li class="nav-item @@gallery">
-                            <a class="nav-link" asp-controller="Specialty" asp-action="Index">احجز طبيبك</a>
-                        </li>
-                        <li class="nav-item @@service">
-                            <a class="nav-link" href="service.html">استشارة طبيب</a>
-                        </li>
-                        <li class="nav-item @@contact">
-                            <a class="nav-link" asp-controller="Home" asp-action="Contact">تواصل معنا</a>
-                        </li>
-                        <li class="nav-item @@about">
-                            <a class="nav-link" asp-controller="Home" asp-action="About">من نحن</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index"> الصفحة الرئيسية </a>
-                        </li>
+                            <li class="nav-item @@team">
+                                <a class="nav-link" asp-controller="Category" asp-action="Index">الفئات</a>
+                            </li>
+                            <li class="nav-item @@team">
+                                <a class="nav-link" href="team.html">فحص مرض السكر</a>
+                            </li>
+                            <li class="nav-item @@gallery">
+                                <a class="nav-link" asp-controller="Specialty" asp-action="Index">احجز طبيبك</a>
+                            </li>
+
+                            <li class="nav-item dropdown @@blogs">
+                                <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">الصفحة الرئيسية</a>
+                            </li>
+                            <li class="nav-item @@about">
+                                <a class="nav-link" asp-controller="Home" asp-action="About">من نحن</a>
+                            </li>
+                            <li class="nav-item @@contact">
+                                <a class="nav-link" asp-controller="Home" asp-action="Contact">تواصل معنا</a>
+                            </li>
+                            <li class="nav-item @@team">
+                                <a class="nav-link" href="team.html">فحص مرض السكر</a>
+                            </li>
+                            <li class="nav-item @@gallery">
+                                <a class="nav-link" asp-controller="Specialty" asp-action="Index">احجز طبيبك</a>
+                            </li>
+                            <li class="nav-item @@service">
+                                <a class="nav-link" href="service.html">استشارة طبيب</a>
+                            </li>
+                            <li class="nav-item dropdown @@blogs">
+                                <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
+                            </li>
+
+
+                        }
                     </ul>
                 </div>
             </div>
