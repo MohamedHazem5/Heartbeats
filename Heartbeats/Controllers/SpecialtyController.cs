@@ -31,7 +31,7 @@ namespace Heartbeats.Controllers
         }
 
         // Edit Speciality
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(Specialty specialty)
         {
             if (!ModelState.IsValid) return View(specialty);
@@ -41,7 +41,7 @@ namespace Heartbeats.Controllers
         }
 
         // Delete Speciality
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var specialty = await _context.Specialties.FindAsync(id);
