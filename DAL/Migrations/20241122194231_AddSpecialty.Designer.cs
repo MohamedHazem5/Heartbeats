@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241122194231_AddSpecialty")]
+    partial class AddSpecialty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,63 +159,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specialties", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960692/da-net7/goeulqkn8z9bdisnryiy.png",
-                            Name = "أمراض القلب"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960705/da-net7/vgyf9fpn4yznhtihnhds.png",
-                            Name = "الأمراض النفسية"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960810/da-net7/k7l6rs6oaliku1zgvtef.png",
-                            Name = "الأمراض الجلدية"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ImageUrl = "https://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960909/da-net7/eqkehqhlgqjro8yvzqhh.png",
-                            Name = "طب النساء والتوليد"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960853/da-net7/sz1zgbptcmdt71coxmcf.png",
-                            Name = "طب الأطفال"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960844/da-net7/jfvznth944kstrmwv3yt.png",
-                            Name = "علم الأورام"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1681515080/da-net7/njgxuneb3oppmbxvycfq.png",
-                            Name = "الأمراض العصبية"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960887/da-net7/illqiu1xxq1pchw1mwqj.png",
-                            Name = "طب العيون"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            ImageUrl = "http://res.cloudinary.com/dx3xe3xxp/image/upload/v1680960896/da-net7/aeqgqwcdfl5hdreupoca.png",
-                            Name = "طب الجهاز الهضمي"
-                        });
+                    b.ToTable("Specialties");
                 });
 
             modelBuilder.Entity("Models.User", b =>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using DAL.Seed;
 
 namespace DAL.Data
 {
@@ -9,6 +10,8 @@ namespace DAL.Data
         IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<Specialty> Specialties { get; set; }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -16,7 +19,7 @@ namespace DAL.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            builder.SeedSpecialty();
             builder.Entity<Role>().ToTable("Roles");
             builder.Entity<User>().ToTable("Users");
             builder.Entity<UserRole>().ToTable("UserRole");
@@ -38,6 +41,4 @@ namespace DAL.Data
                 .IsRequired();
         }
     }
-
 }
-
