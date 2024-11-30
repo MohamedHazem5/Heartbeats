@@ -14,6 +14,7 @@ namespace DAL.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -42,6 +43,11 @@ namespace DAL.Data
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
+
+            builder.Entity<Appointment>()
+                .HasOne(a => a.Doctor)
+                .WithMany(d => d.Appointments)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
