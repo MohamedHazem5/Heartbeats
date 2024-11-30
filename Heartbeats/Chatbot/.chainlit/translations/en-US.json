@@ -14,7 +14,7 @@
     },
     "molecules": {
       "newChatButton": {
-        "newChat": "New Chat"
+        "newChat": "محادثة جديدة"
       },
       "tasklist": {
         "TaskList": {
@@ -120,21 +120,21 @@
         },
         "inputBox": {
           "input": {
-            "placeholder": "Type your message here..."
+            "placeholder": "أكتب رسالتك هنا...."
           },
           "speechButton": {
             "start": "Start recording",
             "stop": "Stop recording"
           },
           "SubmitButton": {
-            "sendMessage": "Send message",
-            "stopTask": "Stop Task"
+            "sendMessage": "أرسال",
+            "stopTask": "توقف"
           },
           "UploadButton": {
-            "attachFiles": "Attach files"
+            "attachFiles": "ارفاق ملف"
           },
           "waterMark": {
-            "text": "Built with"
+            "text": "Developed By @moamen270 |  "
           }
         },
         "Messages": {

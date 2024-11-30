@@ -30,8 +30,14 @@
                             </div>                           
                         </div>
                         <div class="card-footer" dir="ltr">
-                            <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-primary">حجز موعد</a>
+                            <form asp-controller="Appointment" asp-action="Create" method="post" class="d-inline">
+                                <input type="hidden" name="doctorId" value="@doctor.Id" />
+                                <input type="date" name="appointmentDate" class="form-control mb-2" required
+                                       min="@DateTime.Now.ToString("yyyy-MM-dd")" />                                
+                                <button type="submit" class="btn btn-primary">حجز موعد</button>
+                            </form>
                         </div>
+
                     </div>
                 </div>
             }
