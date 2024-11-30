@@ -1,0 +1,200 @@
+﻿@model List<Models.Blog>
+
+@{
+    ViewBag.Title = "المدونات"; // Model name in Arabic
+}
+
+<div dir="rtl">
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between">
+            <h2 class="text-right">المدونات</h2>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                إضافة
+            </button>
+        </div>
+        <hr />
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم المدونة</th>
+                    <th>رابط الصورة</th>
+                    <th>الفئة</th>
+                    <th>تاريخ الاضافة</th>
+                    <th>الوصف</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.BlogId</td>
+                        <td>@item.Title</td>
+                        <td>
+                            <img src="@item.ImageUrl" alt="@item.Title" style="width: 50px; height: 50px;" />
+                        </td>
+                        <td>@item.Category?.Name</td>
+                        <td>@item.CreatedAt.ToString("yyyy-MM-dd")</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                                    data-id="@item.BlogId" data-name="@item.Title">
+                                تعديل
+                            </button>
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                    data-id="@item.BlogId" data-name="@item.Title">
+                                حذف
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <br />
+    <br />
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" action="/Blog/Add">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">إضافة تخصص جديد</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="Title" class="form-label">اسم المدونة</label>
+                            <input type="text" class="form-control" id="Title" name="Title" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">الوصف</label>
+                            <input type="text" class="form-control" id="Description" name="Description" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Author" class="form-label">الكاتب</label>
+                            <input type="text" class="form-control" id="Author" name="Author" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="CategoryId" class="form-label">التصنيف</label>
+                            <select class="form-control" id="CategoryId" name="CategoryId" required>
+                                <option value="">اختر تصنيفًا</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ImageUrl" class="form-label">رابط الصورة</label>
+                            <input type="text" class="form-control" id="ImageUrl" name="ImageUrl" required />
+                        </div>
+
+                        <div class="mb-3 text-center">
+                            <!-- Image Preview -->
+                            <img id="addImagePreview" src="" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd; display: none;" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-primary">إضافة</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" action="/Blog/Edit">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">تعديل المدونة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editId" name="BlogId" />
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">اسم المدونة</label>
+                            <input type="text" class="form-control" id="editName" name="Title" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">الوصف</label>
+                            <input type="text" class="form-control" id="editName" name="Description" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editImageUrl" class="form-label">رابط الصورة</label>
+                            <input type="text" class="form-control" id="editImageUrl" name="ImageUrl" required />
+                        </div>
+                        <div class="mb-3 text-center">
+                            <!-- Image Preview -->
+                            <img id="editImagePreview" src="" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd;" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-warning">تعديل</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-action="Delete">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">تحذير</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>هل أنت متأكد أنك تريد حذف <span id="deleteName"></span>؟</p>
+                        <input type="hidden" id="deleteId" name="Id" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-danger">حذف</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    @* Edit Script *@
+    <script>
+        // Function to handle modal show and populate data
+        var editModal = document.getElementById('editModal');
+        editModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+            var id = button.getAttribute('data-id');
+            var name = button.getAttribute('data-name');
+
+            // Populate fields
+            document.getElementById('editId').value = id;
+            document.getElementById('editName').value = name;
+
+        });
+    </script>
+    @* Delete Script *@
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var name = button.getAttribute('data-name');
+            deleteModal.querySelector('#deleteId').value = id;
+            deleteModal.querySelector('#deleteName').textContent = name;
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</div>

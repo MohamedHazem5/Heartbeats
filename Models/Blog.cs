@@ -7,7 +7,7 @@
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Author { get; set; }
-
+        public string ImageUrl { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
     }

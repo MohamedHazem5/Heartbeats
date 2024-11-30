@@ -220,9 +220,8 @@
                             <li class="nav-item @@gallery">
                                 <a class="nav-link" asp-controller="Specialty" asp-action="Index">احجز طبيبك</a>
                             </li>
-
-                            <li class="nav-item dropdown @@blogs">
-                                <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
+                            <li class="nav-item @@blogs">
+                                <a class="nav-link" asp-controller="Blog" asp-action="Index">المقالات</a>
                             </li>
                         }
                         else
@@ -245,11 +244,12 @@
                             <li class="nav-item @@service">
                                 <a class="nav-link" href="service.html">استشارة طبيب</a>
                             </li>
-                            <li class="nav-item dropdown @@blogs">
-                                <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
+@*                             <li class="nav-item dropdown @@blogs">
+                                <a class="nav-link dropdown-toggle" asp-controller="Blog" asp-action="Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">المقالات</a>
+                            </li> *@
+                            <li class="nav-item @@blogs">
+                                <a class="nav-link" asp-controller="Blog" asp-action="Index">المقالات</a>
                             </li>
-
-
                         }
                     </ul>
                 </div>
