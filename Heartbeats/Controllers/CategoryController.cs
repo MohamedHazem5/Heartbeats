@@ -16,9 +16,9 @@ namespace Heartbeats.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _context.Categories.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
             return View(categories);
         }
 
