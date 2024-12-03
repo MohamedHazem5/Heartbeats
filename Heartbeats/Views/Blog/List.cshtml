@@ -17,12 +17,11 @@
         <table class="table table-bordered mt-3">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>الرقم التعريفي</th>
                     <th>اسم المدونة</th>
                     <th>رابط الصورة</th>
                     <th>الفئة</th>
                     <th>تاريخ الاضافة</th>
-                    <th>الوصف</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -37,7 +36,6 @@
                         </td>
                         <td>@item.Category?.Name</td>
                         <td>@item.CreatedAt.ToString("yyyy-MM-dd")</td>
-                        <td>@item.Description</td>
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
                                     data-id="@item.BlogId" data-name="@item.Title">
@@ -126,7 +124,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="editDescription" class="form-label">الوصف</label>
-                            <input type="text" class="form-control" id="editName" name="Description" required />
+                            <input type="text" class="form-control" id="editDescription" name="Description" required />
                         </div>
 
                         <div class="mb-3">
@@ -168,6 +166,22 @@
         </div>
     </div>
 
+    @* Add Script *@
+    <script>
+        // Add event listener for the ImageUrl field in the Add Modal
+        document.getElementById('ImageUrl').addEventListener('input', function () {
+            var imageUrl = this.value; // Get the URL from the input field
+            var imagePreview = document.getElementById('addImagePreview');
+
+            // Check if the URL is valid (basic validation)
+            if (imageUrl.trim() !== "") {
+                imagePreview.src = imageUrl; // Set the src of the preview image
+                imagePreview.style.display = 'inline'; // Show the preview image
+            } else {
+                imagePreview.style.display = 'none'; // Hide the preview image if URL is empty
+            }
+        });
+    </script>
 
 
     @* Edit Script *@
@@ -178,11 +192,23 @@
             var button = event.relatedTarget; // Button that triggered the modal
             var id = button.getAttribute('data-id');
             var name = button.getAttribute('data-name');
-
+            var imageUrl = button.getAttribute('data-imageurl');
+            var description = button.getAttribute('data-description');
             // Populate fields
             document.getElementById('editId').value = id;
             document.getElementById('editName').value = name;
+            document.getElementById('editImageUrl').value = imageUrl;
+            document.getElementById('editDescription').value = description;
 
+            // Set the image preview
+            var imagePreview = document.getElementById('editImagePreview');
+            imagePreview.src = imageUrl;
+
+            // Add event listener for live URL updates
+            var imageUrlInput = document.getElementById('editImageUrl');
+            imageUrlInput.addEventListener('input', function () {
+                imagePreview.src = this.value;
+            });
         });
     </script>
     @* Delete Script *@

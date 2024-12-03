@@ -16,16 +16,20 @@ namespace Heartbeats.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var blogs = await _context.Blogs.ToListAsync();
+            ViewBag.Categories = await _context.Categories.ToListAsync();
+
+            return View(blogs);
         }
 
-        public IActionResult Details()
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var blog = await _context.Blogs.FindAsync(id);
+            return View(blog);
         }
-        public async Task<IActionResult> AdminHome()
+        public async Task<IActionResult> List()
         {
             var blogs = await _context.Blogs.ToListAsync();
             ViewBag.Categories = await _context.Categories.ToListAsync();

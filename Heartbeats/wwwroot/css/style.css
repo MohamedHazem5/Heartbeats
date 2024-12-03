@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /*=== MEDIA QUERY ===*/
 body {
-  font-size: 15px;
+  font-size: 12px;
   color: #777777;
   line-height: 1.8em;
   font-weight: 400;
@@ -297,9 +297,6 @@ li {
   border-color: #7b64cb;
 }
 
-.header-uper {
-  padding: 40px 0px;
-}
 .header-uper .contact-info {
   float: left;
 }
