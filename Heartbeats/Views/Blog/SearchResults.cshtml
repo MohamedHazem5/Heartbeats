@@ -1,0 +1,34 @@
+﻿@model List<Models.Blog>
+@{
+    ViewBag.Title = "نتائج البحث";
+}
+
+<section class="search-results text-right" dir="rtl">
+    <div class="container">
+        <br />
+
+        <h2>نتائج البحث</h2>
+        @if (Model != null && Model.Any())
+        {
+            <ul class="blog-list">
+                @foreach (var blog in Model)
+                {
+                    <li>
+                        <a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.BlogId">
+                            <h4>@blog.Title</h4>
+                        </a>
+                        <p>@blog.Author - @blog.CreatedAt</p>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <br />
+            <p >لا توجد نتائج مطابقة.</p>
+            <a class="btn btn-warning" asp-controller="Blog" asp-action="Index">الرجوع للصفحة السابقة</a>
+            <br />
+            <br />
+        }
+    </div>
+</section>

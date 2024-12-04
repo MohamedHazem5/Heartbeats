@@ -1,7 +1,9 @@
 ﻿@model List<Models.Blog>
+@using System.Text.RegularExpressions
 
 @{
     ViewBag.Title = "المدونات"; // Model name in Arabic
+
 }
 
 
@@ -16,10 +18,9 @@
                         <h6>بحث</h6>
                     </div>
                     <div class="search-box">
-                        <form method="post" action="index.html">
-                            <div class="input-group">
-                                <input class="form-control" type="search" name="search" placeholder="أدخل للبحث" required="" autocomplete="off">
-                            </div>
+                        <form method="get" asp-controller="Blog" asp-action="Search">
+                            <input class="form-control" type="search" name="query" placeholder="أدخل للبحث" required="">
+                            <button type="submit" class="btn btn-secondary mt-2" hidden>بحث</button>
                         </form>
                     </div>
                     <div class="categorise-menu text-right">
@@ -29,7 +30,11 @@
                         <ul class="categorise-list">
                             @foreach (var category in ViewBag.Categories)
                             {
-                                <li><a href="blog.html">@category.Name</a></li>
+                                <li>
+                                    <a asp-controller="Blog" asp-action="ByCategory" asp-route-categoryId="@category.CategoryId">
+                                        @category.Name
+                                    </a>
+                                </li>
                             }
                         </ul>
 
@@ -67,7 +72,7 @@
                                 </a>
                                 <span>@item.Author - @item.CreatedAt</span>
                                 <p>
-                                    @Html.Raw(item.Description).ToString()?.Substring(1,10)
+                                    @Html.Raw(Regex.Replace(item.Description, "<.*?>", string.Empty).Substring(0, 100)) ...
                                 </p>
                                 <div class="link-btn">
                                     <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId" class="btn-style-one">اقرأ المزيد</a>

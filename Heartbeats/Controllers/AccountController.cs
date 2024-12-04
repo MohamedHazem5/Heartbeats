@@ -18,7 +18,7 @@ namespace Heartbeats.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public IActionResult Login()
         {
             return View(new LoginDto());
         }
@@ -36,14 +36,14 @@ namespace Heartbeats.Controllers
         }
 
         [HttpGet]
-        public ActionResult Register()
+        public IActionResult Register()
         {
             return View(new RegisterDto());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterDto registerDto)
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             if (!ModelState.IsValid) return View(registerDto);
 
@@ -78,6 +78,18 @@ namespace Heartbeats.Controllers
             //return RedirectToAction("Index", "Home");
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

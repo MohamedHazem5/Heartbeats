@@ -36,7 +36,7 @@
                             <h4>@Model.Title</h4>
                             <span>@Model.Author - @Model.CreatedAt</span>
                             <p>
-                                @Model.Description
+                               @Html.Raw( Model.Description)
                             </p>
 @*                             <div class="text">
                                 <p>
@@ -54,9 +54,26 @@
                         <h6>البحث</h6>
                     </div>
                     <div class="search-box">
-                        <form method="post" action="index.html">
-                            <input class="form-control" type="search" name="search" placeholder="أدخل للبحث" required="">
+                        <form method="get" asp-controller="Blog" asp-action="Search">
+                            <input class="form-control" type="search" name="query" placeholder="أدخل للبحث" required="">
+                            <button type="submit" class="btn btn-primary mt-2" hidden>بحث</button>
                         </form>
+                    </div>
+                    <div class="categorise-menu text-right">
+                        <div class="text-title">
+                            <h6>الفئات</h6>
+                        </div>
+                        <ul class="categorise-list">
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <li>
+                                    <a asp-controller="Blog" asp-action="ByCategory" asp-route-categoryId="@category.CategoryId">
+                                        @category.Name
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
                     </div>
                 </div>
             </div>
