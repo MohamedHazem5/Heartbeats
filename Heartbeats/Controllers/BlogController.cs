@@ -46,16 +46,18 @@ namespace Heartbeats.Controllers
             blog.CreatedAt = DateTime.Now;
             await _context.Blogs.AddAsync(blog);
             await _context.SaveChangesAsync();
-            return RedirectToAction("AdminHome");
+            return RedirectToAction("List");
         }
         // Edit Blog
         [HttpPost]
         public async Task<IActionResult> Edit(Blog blog)
         {
+            ViewBag.Categories = await _context.Categories.ToListAsync();
+
             if (!ModelState.IsValid) return View(blog);
             _context.Blogs.Update(blog);
             await _context.SaveChangesAsync();
-            return RedirectToAction("AdminHome");
+            return RedirectToAction("List");
         }
 
         // Delete Blog
@@ -66,7 +68,7 @@ namespace Heartbeats.Controllers
             if (blog == null) return NotFound();
             _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
-            return RedirectToAction("AdminHome");
+            return RedirectToAction("List");
         }
 
     }

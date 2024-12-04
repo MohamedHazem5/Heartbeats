@@ -38,7 +38,7 @@
                         <td>@item.CreatedAt.ToString("yyyy-MM-dd")</td>
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
-                                    data-id="@item.BlogId" data-name="@item.Title">
+                                    data-id="@item.BlogId" data-name="@item.Title" data-description="@item.Description" data-imageurl="@item.ImageUrl" data-categoryid="@item.CategoryId">
                                 تعديل
                             </button>
                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
@@ -58,7 +58,7 @@
     <!-- Add Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content text-right">
                 <form method="post" action="/Blog/Add">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addModalLabel">إضافة تخصص جديد</h5>
@@ -70,8 +70,11 @@
                             <input type="text" class="form-control" id="Title" name="Title" required />
                         </div>
                         <div class="mb-3">
-                            <label for="Description" class="form-label">الوصف</label>
-                            <input type="text" class="form-control" id="Description" name="Description" required />
+                            <label for="addDescription" class="form-label">الوصف</label>
+                            <textarea class="form-control" id="addDescription" name="Description" rows="3" readonly></textarea>
+                            <button type="button" class="btn btn-link" data-bs-target="#descriptionModal" data-bs-toggle="modal" data-source="add">
+                                تعديل الوصف الكامل
+                            </button>
                         </div>
                         <div class="mb-3">
                             <label for="Author" class="form-label">الكاتب</label>
@@ -110,7 +113,7 @@
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content text-right">
                 <form method="post" action="/Blog/Edit">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editModalLabel">تعديل المدونة</h5>
@@ -124,9 +127,21 @@
                         </div>
                         <div class="mb-3">
                             <label for="editDescription" class="form-label">الوصف</label>
-                            <input type="text" class="form-control" id="editDescription" name="Description" required />
+                            <textarea class="form-control" id="editDescription" name="Description" rows="3" readonly></textarea>
+                            <button type="button" class="btn btn-link" data-bs-target="#descriptionModal" data-bs-toggle="modal" data-source="edit">
+                                تعديل الوصف الكامل
+                            </button>
                         </div>
-
+                        <div class="mb-3">
+                            <label for="CategoryId" class="form-label">التصنيف</label>
+                            <select class="form-control" id="CategoryId" name="CategoryId" required>
+                                <option value="">اختر تصنيفًا</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+                                }
+                            </select>
+                        </div>
                         <div class="mb-3">
                             <label for="editImageUrl" class="form-label">رابط الصورة</label>
                             <input type="text" class="form-control" id="editImageUrl" name="ImageUrl" required />
@@ -147,7 +162,7 @@
     <!-- Delete Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content text-right">
                 <form method="post" asp-action="Delete">
                     <div class="modal-header">
                         <h5 class="modal-title" id="deleteModalLabel">تحذير</h5>
@@ -165,6 +180,28 @@
             </div>
         </div>
     </div>
+
+    <!--Description Modal-->
+    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="descriptionModalLabel">تعديل الوصف الكامل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control tiny-editor" id="fullDescription" rows="15" placeholder="اكتب المقال الكامل هنا..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveDescription">
+                        حفظ الوصف
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     @* Add Script *@
     <script>
@@ -186,31 +223,40 @@
 
     @* Edit Script *@
     <script>
-        // Function to handle modal show and populate data
         var editModal = document.getElementById('editModal');
         editModal.addEventListener('show.bs.modal', function (event) {
             var button = event.relatedTarget; // Button that triggered the modal
+
+            // Retrieve data from attributes
             var id = button.getAttribute('data-id');
             var name = button.getAttribute('data-name');
-            var imageUrl = button.getAttribute('data-imageurl');
             var description = button.getAttribute('data-description');
-            // Populate fields
+            var imageUrl = button.getAttribute('data-imageurl');
+            var categoryId = button.getAttribute('data-categoryid');
+
+            // Populate fields in modal
             document.getElementById('editId').value = id;
             document.getElementById('editName').value = name;
-            document.getElementById('editImageUrl').value = imageUrl;
             document.getElementById('editDescription').value = description;
+            document.getElementById('editImageUrl').value = imageUrl;
 
             // Set the image preview
             var imagePreview = document.getElementById('editImagePreview');
             imagePreview.src = imageUrl;
 
-            // Add event listener for live URL updates
+            // Set the selected category
+            if (categoryId) {
+                document.getElementById('CategoryId').value = categoryId;
+            }
+
+            // Add live update for the image preview
             var imageUrlInput = document.getElementById('editImageUrl');
             imageUrlInput.addEventListener('input', function () {
                 imagePreview.src = this.value;
             });
         });
     </script>
+
     @* Delete Script *@
     <script>
         var deleteModal = document.getElementById('deleteModal');
@@ -222,5 +268,49 @@
             deleteModal.querySelector('#deleteName').textContent = name;
         });
     </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tinymce.init({
+                selector: '.tiny-editor',
+                plugins: 'advlist autolink link image lists charmap preview anchor code',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                menubar: false,
+                height: 400,
+                entity_encoding: 'raw', // Ensures proper character storage
+            });
+
+            let sourceField; // To store the reference to the source textarea field
+
+            // Handle opening the description modal
+            var descriptionModal = document.getElementById('descriptionModal');
+            descriptionModal.addEventListener('show.bs.modal', function (event) {
+                var triggerButton = event.relatedTarget; // Button that triggered the modal
+                var source = triggerButton.getAttribute('data-source'); // Get source (add or edit)
+
+                // Determine which field the modal is editing
+                if (source === 'add') {
+                    sourceField = document.getElementById('addDescription');
+                } else if (source === 'edit') {
+                    sourceField = document.getElementById('editDescription');
+                }
+
+                // Load content into TinyMCE editor
+                var currentContent = sourceField.value || ""; // Use empty string if no value
+                tinymce.get('fullDescription').setContent(currentContent);
+            });
+
+            // Save content back to the respective modal's description field
+            document.getElementById('saveDescription').addEventListener('click', function () {
+                var fullContent = tinymce.get('fullDescription').getContent(); // Get content from TinyMCE
+                if (sourceField) {
+                    sourceField.value = fullContent; // Update the hidden/readonly textarea
+                }
+            });
+        });
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
 </div>

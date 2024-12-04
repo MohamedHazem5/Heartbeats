@@ -67,7 +67,7 @@
                                 </a>
                                 <span>@item.Author - @item.CreatedAt</span>
                                 <p>
-                                    @item.Description.Substring(0, Math.Min(100, @item.Description.Length - 1)) ..
+                                    @Html.Raw(item.Description).ToString()?.Substring(1,10)
                                 </p>
                                 <div class="link-btn">
                                     <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId" class="btn-style-one">اقرأ المزيد</a>

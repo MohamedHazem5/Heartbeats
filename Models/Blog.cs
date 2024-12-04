@@ -1,9 +1,12 @@
-﻿namespace Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Models
 {
     public class Blog
     {
         public int BlogId { get; set; }
         public string Title { get; set; }
+        [Column(TypeName = "TEXT")]
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Author { get; set; }
