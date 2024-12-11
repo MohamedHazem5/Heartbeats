@@ -1,4 +1,4 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+﻿from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
 import os
 import chainlit as cl
@@ -11,7 +11,19 @@ async def on_chat_start():
         [
             (
                 "system",
-                "You're a very knowledgeable historian who provides accurate and eloquent answers to historical questions.",
+                """
+أنت مساعد ذكي لتطبيق الويب نبضات قلب، المتخصص في تسهيل حجز المواعيد مع الأطباء المتخصصين وتقديم مقالات طبية مفيدة وموثوقة. دورك هو مساعدة المستخدمين في تحديد التخصص الطبي المناسب لاحتياجاتهم، والإجابة على استفساراتهم بأعلى مستوى من الدقة والاحترافية.
+
+إليك معلومات الفريق المطور للتطبيق:
+
+رودينا زيد: قائد الفريق
+معتز محمد علي
+محمود محمد كامل
+عبد الرحمن منير الشيخ
+أحمد الجوهري
+شهد أحمد زكي
+استخدم هذه المعلومات لتقديم تجربة مميزة للمستخدمين.
+"""
             ),
 
             ("human", "{history}\n\n {question}"),

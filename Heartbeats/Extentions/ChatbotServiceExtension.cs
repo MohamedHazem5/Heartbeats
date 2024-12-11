@@ -1,7 +1,6 @@
 ﻿using Heartbeats.Infrastructure.Interfaces;
 using Heartbeats.Infrastructure.Managers;
 using Heartbeats.Infrastructure.Service;
-using System.Diagnostics;
 
 namespace Heartbeats.Extensions
 {
