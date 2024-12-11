@@ -40,7 +40,8 @@
                         <td>@item.CreatedAt.ToString("yyyy-MM-dd")</td>
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
-                                    data-id="@item.BlogId" data-name="@item.Title" data-description="@item.Description" data-imageurl="@item.ImageUrl" data-categoryid="@item.CategoryId">
+                                    data-id="@item.BlogId" data-name="@item.Title" data-description="@item.Description"
+                                    data-author="@item.Author" data-imageurl="@item.ImageUrl" data-categoryid="@item.CategoryId" data-categoryname="@item.Category?.Name">
                                 تعديل
                             </button>
                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
@@ -74,7 +75,6 @@
                         <div class="mb-3">
                             <label for="addDescription " class="form-label">الوصف</label>
                             <textarea class="form-control tiny-editor" id="addDescription" name="Description" rows="10"></textarea>
-
                         </div>
                         <div class="mb-3">
                             <label for="Author" class="form-label">الكاتب</label>
@@ -112,7 +112,7 @@
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content text-right">
                 <form method="post" action="/Blog/Edit">
                     <div class="modal-header">
@@ -126,16 +126,18 @@
                             <input type="text" class="form-control" id="editName" name="Title" required />
                         </div>
                         <div class="mb-3">
-                            <label for="editDescription" class="form-label">الوصف</label>
-                            <textarea class="form-control" id="editDescription" name="Description" rows="3" readonly></textarea>
-                            <button type="button" class="btn btn-link" data-bs-target="#descriptionModal" data-bs-toggle="modal" data-source="edit">
-                                تعديل الوصف الكامل
-                            </button>
+                            <label for="editDescription " class="form-label">الوصف</label>
+                            <textarea class="form-control tiny-editor" id="editDescription" name="Description" rows="10"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAuthor" class="form-label">الكاتب</label>
+                            <input type="text" class="form-control" id="editAuthor" name="Author" />
                         </div>
                         <div class="mb-3">
                             <label for="CategoryId" class="form-label">التصنيف</label>
                             <select class="form-control" id="CategoryId" name="CategoryId" required>
                                 <option value="">اختر تصنيفًا</option>
+                                <option value="" id="editCategoryName" selected></option>
                                 @foreach (var category in ViewBag.Categories)
                                 {
                                     <option value="@category.CategoryId">@category.Name</option>
@@ -181,7 +183,7 @@
         </div>
     </div>
 
-
+    @* TinyMCE Script *@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             tinymce.init({
@@ -193,6 +195,7 @@
                 entity_encoding: 'raw', // Ensures proper character storage
             });
     </script>
+
     @* Add Script *@
     <script>
         // Add event listener for the ImageUrl field in the Add Modal
@@ -220,24 +223,40 @@
             // Retrieve data from attributes
             var id = button.getAttribute('data-id');
             var name = button.getAttribute('data-name');
+            var author = button.getAttribute('data-author');
             var description = button.getAttribute('data-description');
             var imageUrl = button.getAttribute('data-imageurl');
+            var category = button.getAttribute('data-categoryname');
             var categoryId = button.getAttribute('data-categoryid');
 
             // Populate fields in modal
             document.getElementById('editId').value = id;
             document.getElementById('editName').value = name;
+            document.getElementById('editAuthor').value = author;
             document.getElementById('editDescription').value = description;
             document.getElementById('editImageUrl').value = imageUrl;
+            document.getElementById('editCategoryName').value = categoryId;
+            document.getElementById('editCategoryName').textContent = category;
+
+
+
+            tinymce.get('editDescription').setContent(description);
+
+            // Pass categoryId to the server or dynamically assign it to a hidden field
+            document.addEventListener('DOMContentLoaded', function () {
+                var selectElement = document.getElementById('CategoryId');
+                for (var i = 0; i < selectElement.options.length; i++) {
+                    if (selectElement.options[i].value == categoryId) {
+                        selectElement.options[i].selected = true;
+                        break;
+                    }
+                }
+            });
 
             // Set the image preview
             var imagePreview = document.getElementById('editImagePreview');
             imagePreview.src = imageUrl;
 
-            // Set the selected category
-            if (categoryId) {
-                document.getElementById('CategoryId').value = categoryId;
-            }
 
             // Add live update for the image preview
             var imageUrlInput = document.getElementById('editImageUrl');

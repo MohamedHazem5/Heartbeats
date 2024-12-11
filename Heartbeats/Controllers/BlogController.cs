@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using System.Reflection.Metadata;
 
 namespace Heartbeats.Controllers
 {
@@ -89,8 +88,17 @@ namespace Heartbeats.Controllers
         {
             ViewBag.Categories = await _context.Categories.ToListAsync();
 
+            var oldblog = await _context.Blogs.FindAsync(blog.BlogId);
+            if (oldblog == null) return View(blog);
             if (!ModelState.IsValid) return View(blog);
-            _context.Blogs.Update(blog);
+
+            // Update the properties of the existing entity
+            oldblog.CreatedAt = oldblog.CreatedAt;
+            oldblog.Title = blog.Title;
+            oldblog.Description = blog.Description;
+            oldblog.Author = blog.Author;
+            oldblog.CategoryId = blog.CategoryId;
+            oldblog.ImageUrl = blog.ImageUrl;
             await _context.SaveChangesAsync();
             return RedirectToAction("List");
         }
