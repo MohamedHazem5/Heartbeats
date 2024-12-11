@@ -72,8 +72,24 @@
                                 </a>
                                 <span>@item.Author - @item.CreatedAt</span>
                                 <p>
-                                    @Html.Raw(Regex.Replace(item.Description, "<.*?>", string.Empty).Substring(0, 100)) ...
+                                    @{
+                                        // Strip HTML tags
+                                        string plainText = Regex.Replace(item.Description, "<.*?>", string.Empty);
+
+                                        // Check if the length of plain text is less than or equal to 100
+                                        if (plainText.Length <= 100)
+                                        {
+                                            @Html.Raw(plainText)
+                                            // Output the full description
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(plainText.Substring(0, 100) + "...")
+                                            // Output truncated description
+                                        }
+                                    }
                                 </p>
+
                                 <div class="link-btn">
                                     <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId" class="btn-style-one">اقرأ المزيد</a>
                                 </div>
