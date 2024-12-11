@@ -1,4 +1,52 @@
-﻿<div class="hero-slider">
+﻿<style>
+    .card {
+        border: none; /* Removes card border */
+    }
+
+        .card img {
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%; /* Ensure cards are of equal height */
+    }
+
+    .card ul {
+        list-style-type: none; /* Remove default list style */
+        padding-right: 20px; /* Adjust for alignment in RTL */
+        margin: 0;
+    }
+
+        .card ul li {
+            font-size: 0.95rem;
+            color: #555; /* Text color */
+            position: relative;
+            padding-right: 1.5rem; /* Add padding on the right */
+            margin-bottom: 0.5rem;
+            text-align: right; /* Ensure text aligns to the right */
+        }
+
+            .card ul li::before {
+                content: "●"; /* Custom dot */
+                font-size: 1.2rem; /* Adjust the size of the dot */
+                color: #007bff; /* Replace with your website's primary color */
+                position: absolute;
+                right: 0; /* Position dot to the right */
+                top: 0;
+                transform: translateY(-20%); /* Adjust alignment */
+            }
+
+
+    .row .card {
+        height: 100%; /* Equalize card height within the row */
+    }
+</style>
+
+<div class="hero-slider">
 
     <!-- Slider Item -->
     <div class="slider-item slide1" style="background-image:url(images/slider/slider-1.jpg)">
@@ -350,121 +398,77 @@
 </section>
 <!--End about us area-->
 <!--Service Section-->
-<section class="service-section bg-gray section">
-    <div class="container">
-        <div class="section-title text-center">
-            <h3>
-                احجز الكشف
-                <span>حسب التخصص</span>
-            </h3>
-            <p>
-                يمكنك الان حجز مع الطبيب المناسب لك علي حسب التخصص الذى تريده
-            </p>
+<div class="container text-right my-5">
+    <h3 class="text-center mb-4">بعض الحالات التي يمكن التعامل معها عبر خدمات الرعاية الصحية عن بُعد</h3>
+    <p class="text-center text-muted mb-5">
+        اسأل الأطباء حول معظم الحالات الصحية دون الحاجة لمغادرة المنزل
+    </p>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 mb-4 d-flex">
+            <div class="card flex-fill shadow-sm">
+                <img src="images/skin_doctors.jpg" class="card-img-top" alt="الأمراض الجلدية">
+                <div class="card-body">
+                    <h5 class="card-title">الأمراض الجلدية</h5>
+                    <ul class="list-unstyled">
+                        <li>الثعلبة</li>
+                        <li>التهاب الجلد</li>
+                        <li>الصدفية</li>
+                        <li>حب الشباب</li>
+                        <li>تساقط الشعر</li>
+                        <li>الأكزيما</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="items-container">
-                    <div class="item">
-                        <div class="inner-box">
-                            <div class="img_holder">
-                                <a href="service.html">
-                                    <img loading="lazy" src="images/gallery/nfafsy.jpg" alt="images" class="img-fluid">
-                                </a>
-                            </div>
-                            <div class="image-content text-center">
-                                <span>خدمة مقابل سعر مناسب</span>
-                                <a href="service.html">
-                                    <h6>نفسي</h6>
-                                </a>
-                                <p>يمكنك الحجز مع افضل الاطباء النفسيين</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="inner-box">
-                            <div class="img_holder">
-                                <a href="service.html">
-                                    <img loading="lazy" src="images/gallery/child.jpg" alt="images" class="img-fluid">
-                                </a>
-                            </div>
-                            <div class="image-content text-center">
-                                <span>خدمة مقابل سعر مناسب</span>
-                                <a href="service.html">
-                                    <h6>اطفال وحديثي الولادة</h6>
-                                </a>
-                                <p>يمكنك الحجز مع افضل اطباء الاطفال </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="inner-box">
-                            <div class="img_holder">
-                                <a href="service.html">
-                                    <img loading="lazy" src="images/gallery/tenth.jpg" alt="images" class="img-fluid">
-                                </a>
-                            </div>
-                            <div class="image-content text-center">
-                                <span>خدمة مقابل سعر مناسب</span>
-                                <a href="service.html">
-                                    <h6>اسنان</h6>
-                                </a>
-                                <p>يمكنك الحجز مع افضل اطباء الاسنان </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="inner-box">
-                            <div class="img_holder">
-                                <a href="service.html">
-                                    <img loading="lazy" src="images/gallery/skin.jpg" alt="images" class="img-fluid">
-                                </a>
-                            </div>
-                            <div class="image-content text-center">
-                                <span>خدمة مقابل سعر مناسب</span>
-                                <a href="service.html">
-                                    <h6>جلدية</h6>
-                                </a>
-                                <p>يمكنك الحجز مع افضل اطباءالجلديه </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="inner-box">
-                            <div class="img_holder">
-                                <a href="service.html">
-                                    <img loading="lazy" src="images/gallery/Neuroes.png" alt="images" class="img-fluid">
-                                </a>
-                            </div>
-                            <div class="image-content text-center">
-                                <span>خدمة مقابل سعر مناسب</span>
-                                <a href="service.html">
-                                    <h6>مخ واعصاب</h6>
-                                </a>
-                                <p>يمكنك الحجز مع افضل اطباء المخ والاعصاب </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="inner-box">
-                            <div class="img_holder">
-                                <a href="service.html">
-                                    <img loading="lazy" src="images/gallery/bones.jpg" alt="images" class="img-fluid">
-                                </a>
-                            </div>
-                            <div class="image-content text-center">
-                                <span>خدمة مقابل سعر مناسب</span>
-                                <a href="service.html">
-                                    <h6>عظام</h6>
-                                </a>
-                                <p>يمكنك الحجز مع افضل اطباء العظام </p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-3 col-sm-6 mb-4 d-flex">
+            <div class="card flex-fill shadow-sm">
+                <img src="images/nose_doctors.jpg" class="card-img-top" alt="أمراض الأنف والأذن والحنجرة">
+                <div class="card-body">
+                    <h5 class="card-title">أمراض الأنف والأذن والحنجرة</h5>
+                    <ul class="list-unstyled">
+                        <li>التهاب الجيوب</li>
+                        <li>التهاب الجهاز التنفسي</li>
+                        <li>الزكام</li>
+                        <li>التهاب الأذن</li>
+                        <li>ألم الحلق</li>
+                        <li>الحساسية</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4 d-flex">
+            <div class="card flex-fill shadow-sm">
+                <img src="images/child_doctors.jpeg" class="card-img-top" alt="أمراض الأطفال">
+                <div class="card-body">
+                    <h5 class="card-title">أمراض الأطفال</h5>
+                    <ul class="list-unstyled">
+                        <li>الإسهال</li>
+                        <li>التهابات المسالك البولية</li>
+                        <li>الإمساك</li>
+                        <li>نزلات البرد</li>
+                        <li>التهاب الصدر</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4 d-flex">
+            <div class="card flex-fill shadow-sm">
+                <img src="images/woman_doctors.jpg.webp" class="card-img-top" alt="الأمراض النسائية">
+                <div class="card-body">
+                    <h5 class="card-title">الأمراض النسائية</h5>
+                    <ul class="list-unstyled">
+                        <li>التهاب المهبل البكتيري</li>
+                        <li>المشكلات خلال الحمل</li>
+                        <li>ضعف صحة الحمل</li>
+                        <li>التهاب المثانة</li>
+                        <li>عدم انتظام الدورة</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
 <!--End Service Section-->
 <!--team section-->
 <section class="team-section section">
