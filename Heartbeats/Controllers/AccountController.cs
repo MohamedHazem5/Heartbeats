@@ -74,10 +74,9 @@ namespace Heartbeats.Controllers
 
             await _signInManager.SignInAsync(user, true);
 
-            return registerDto.Role.Equals("Doctor", StringComparison.OrdinalIgnoreCase) ? RedirectToAction("Register", "Doctor", user.Id) : RedirectToAction("Index", "Home");
+            return registerDto.Role.Equals("Doctor", StringComparison.OrdinalIgnoreCase) ? RedirectToAction("Register", "Doctor", new { id = user.Id }) : RedirectToAction("Index", "Home");
             //return RedirectToAction("Index", "Home");
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -90,6 +89,7 @@ namespace Heartbeats.Controllers
 
             return View(user);
         }
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
