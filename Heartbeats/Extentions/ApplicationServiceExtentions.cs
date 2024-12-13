@@ -1,4 +1,5 @@
 ﻿using DAL.Data;
+using Heartbeats.Media;
 using Microsoft.EntityFrameworkCore;
 
 namespace Heartbeats.Extentions
@@ -9,6 +10,7 @@ namespace Heartbeats.Extentions
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                  options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<MediaService>();
 
             return services;
         }

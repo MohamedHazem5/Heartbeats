@@ -91,11 +91,11 @@ namespace Heartbeats.Controllers
 
             if (await _userManager.IsInRoleAsync(user, "Doctor"))
             {
-                ViewBag.Patient = await _context.Users.ToListAsync();
                 var doctor = await _context.Doctors
                     .Include(d => d.User)
                     .Include(d => d.Specialty)
                     .Include(d => d.Appointments.Where(a => a.ScheduleAt >= DateTime.Now))
+                    .ThenInclude(app=>app.Patient)
                     .FirstOrDefaultAsync(d => d.UserId == user.Id);
 
                 if (doctor == null) return NotFound();
@@ -107,6 +107,7 @@ namespace Heartbeats.Controllers
                     Appointments = doctor.Appointments.ToList(),
                     Bio=doctor.Bio,
                     Specialty = doctor.Specialty,
+                    ImageUrl = doctor.User.ImageUrl
                 };
             }
             else
@@ -115,12 +116,22 @@ namespace Heartbeats.Controllers
                 {
                     Id = user.Id,
                     Name = user.Name,
-                    
+                    ImageUrl = user.ImageUrl,
                 };
             }
 
             return View(profileDto);
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+
 
         public async Task<IActionResult> Logout()
         {
