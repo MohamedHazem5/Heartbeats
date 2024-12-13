@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DAL.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -10,11 +11,13 @@ namespace Heartbeats.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [HttpGet]
@@ -82,12 +85,41 @@ namespace Heartbeats.Controllers
         public async Task<IActionResult> Profile()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            if (user == null) return NotFound();
+
+            ProfileDto profileDto;
+
+            if (await _userManager.IsInRoleAsync(user, "Doctor"))
             {
-                return NotFound();
+                ViewBag.Patient = await _context.Users.ToListAsync();
+                var doctor = await _context.Doctors
+                    .Include(d => d.User)
+                    .Include(d => d.Specialty)
+                    .Include(d => d.Appointments.Where(a => a.ScheduleAt >= DateTime.Now))
+                    .FirstOrDefaultAsync(d => d.UserId == user.Id);
+
+                if (doctor == null) return NotFound();
+
+                profileDto = new ProfileDto
+                {
+                    Id = doctor.Id,
+                    Name = doctor.User.Name,
+                    Appointments = doctor.Appointments.ToList(),
+                    Bio=doctor.Bio,
+                    Specialty = doctor.Specialty,
+                };
+            }
+            else
+            {
+                profileDto = new ProfileDto
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    
+                };
             }
 
-            return View(user);
+            return View(profileDto);
         }
 
         public async Task<IActionResult> Logout()

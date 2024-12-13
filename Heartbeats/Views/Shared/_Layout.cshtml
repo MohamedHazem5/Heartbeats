@@ -207,9 +207,10 @@
                                     <div class="link-btn text-center text-lg-right ml-3 pr-4">
                                         <a asp-controller="Account" asp-action="Logout" class="btn-style-one">تسجيل الخروج</a>
                                     </div>
-                                    <!-- Profile Image -->
-                                    <img src="@profileImageUrl"
-                                         alt="Profile Image" class="profile-image rounded-circle" />
+                                    <a asp-controller="Account" asp-action="Profile" >
+                                        <img src="@profileImageUrl"
+                                             alt="Profile Image" class="profile-image rounded-circle" />
+                                    </a>
 
                                 </div>
                             }
