@@ -129,9 +129,35 @@ namespace Heartbeats.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound();
-            return View(user);
+            var dto = new EditProfileDto()
+            {
+                Email = user.Email,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+                ImageUrl = user.ImageUrl,
+                UserName = user.UserName,
+
+            };
+            return View(dto);
         }
 
+        [HttpPost]
+
+        public async Task<IActionResult> EditProfile(EditProfileDto dto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+
+            user.Name = dto.Name;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.ImageUrl = dto.ImageUrl;
+            user.Email = dto.Email;
+            user.UserName = dto.UserName;
+
+            await _userManager.UpdateAsync(user);
+            _context.SaveChanges();
+            return RedirectToAction("Profile", "Account");
+        }
 
         public async Task<IActionResult> Logout()
         {

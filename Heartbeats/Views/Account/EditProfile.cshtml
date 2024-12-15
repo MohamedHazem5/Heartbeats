@@ -1,14 +1,13 @@
-﻿@model User 
-@* 
+﻿@model Models.Dtos.EditProfileDto
+
 @{
-    var currentUser = UserManager.GetUserAsync(User).Result;
-    bool isDoctor = SignInManager.IsSignedIn(User) && User.IsInRole("Doctor");
-    string profileImageUrl = !string.IsNullOrEmpty(currentUser?.ImageUrl)
-    ? currentUser.ImageUrl
+
+    string profileImageUrl = !string.IsNullOrEmpty(Model.ImageUrl)
+    ? Model.ImageUrl
     : "/images/default_image.jpg";
 
 
-} *@
+}
 <head>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-dpuaG1suU0eT09tx5plTaGMLBsfDLzUCCUXOY2j/LSvXYuG6Bqs43ALlhIqAJVRb" crossorigin="anonymous">
@@ -401,7 +400,7 @@
             <div class="panel">
                 <div class="user-heading round">
                     <a asp-action="Profile">
-                        <img src="@Model.ImageUrl" alt="Profile Picture">
+                        <img src="@profileImageUrl" alt="Profile Picture">
                     </a>
 
                     <h1>@Model.UserName</h1>
@@ -415,32 +414,47 @@
         </div>
 
         <div class="container col-md-9">
+
             <!-- Begin Modal Body -->
             <label for='basicInfo' class='text-primary display-5'>تعديل المعلومات الشخصية</label>
             <br />
+            <form asp-action="EditProfile" method="post">
             <div class='border border-dark p-4 rounded' id='basicInfo'>
                 <!-- Begin Action Title -->
                 <div class='form-group'>
-                    <label for='actionTitle' class='text-primary'>الاسم</label>
-                    <input type='text' class='form-control' placeholder='اسم المستخدم' id='actionTitle' >
+                    <label asp-for='Name' class='text-primary'>الاسم</label>
+                    <input type='text' asp-for='Name' class='form-control' placeholder='اسم المستخدم' id='actionTitle'  value="@Model.Name">
                     <div class='text-danger collapse' id='valTitle'>اسم المستخدم مطلوب.</div>
                 </div>
                 <div class='form-group'>
-                    <label for='actionTitle' class='text-primary'>البريد الالكتروني</label>
-                    <input type='text' class='form-control' placeholder='البريد الالكتروني' id='actionTitle' readonly>
+                    <label asp-for='Email' class='text-primary'>البريد الالكتروني</label>
+                    <input type='text' asp-for='Email' class='form-control' placeholder='البريد الالكتروني' id='actionTitle' readonly value="@Model.Email">
                     <div class='text-danger collapse' id='valTitle'>البريد الالكتروني مطلوب.</div>
                 </div>
                 <div class='form-group'>
-                    <label for='actionTitle' class='text-primary'>الهاتف المحمول</label>
-                    <input type='text' class='form-control' placeholder='الهاتف المحمول' id='actionTitle'>
+                    <label asp-for='PhoneNumber' class='text-primary'>الهاتف المحمول</label>
+                    <input type='text' asp-for='PhoneNumber' class='form-control' placeholder='الهاتف المحمول' id='actionTitle' value="@Model.PhoneNumber">
                     <div class='text-danger collapse' id='valTitle'>الهاتف المحمول.</div>
                 </div>
-                <div class='form-group'>
-                    <label for='actionTitle' class='text-primary'>الصورة الشخصية</label>
-                    <input type='text' class='form-control' placeholder='ادخل الصورة الشخصية' id='actionTitle'>
-                    <div class='text-danger collapse' id='valTitle'>الصورة الشخصية مطلوبة.</div>
-                </div>
+                    <input type="hidden" id="url" name="ImageUrl" />
 
+                    <div class="form-group">
+                        <div class="row g-2">
+                            <div class="col-8 mb-0">
+                                <label asp-for="ImageUrl" class="form-label">الصورة الشخصية</label>
+                                <input type="file" asp-for="ImageUrl" onchange="enableButton('uploadButton')" required class="form-control" id="uploadedMedia" placeholder="ادخل الصورة التي تريدها">
+
+                            </div>
+                            <div class="col-4 mb-0">
+                                <label for="" class="form-label text-white">.</label>
+
+                                <button class="form-control btn " id="uploadButton" disabled
+                                        onclick="uploadImage();this.disabled=true; this.innerHTML='Uploading…';">
+                                    رفع الصورة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 <!-- End Action Title -->
                 <!-- Begin Action Description -->
 @*                 <div class='form-group'>
@@ -449,8 +463,11 @@
                     <div class='text-danger collapse' id='valDesc'>Action Description is required.</div>
                 </div> *@
 
-
+                    <div class="col-lg-8 ml-auto">
+                        <button type="submit" class="btn btn-warning">حفظ</button>
+                    </div>
             </div>
+            </form>
         </div>
 
         
@@ -459,6 +476,131 @@
 
 <br />
 <br />
+
+<script>
+    function enableButton(id) {
+        const button = document.getElementById(id)
+        button.classList.add("btn-success");
+        button.classList.remove("btn-danger");
+        button.disabled = false
+        button.innerHTML = "Upload";
+    }
+    function setIdEdit(id, name, description, imageURL, imageId) {
+        console.log("imageURL");
+        console.log(imageURL);
+        console.log("imageId");
+        console.log(imageId);
+        console.log("id");
+        console.log(id);
+        console.log("name");
+        console.log(name);
+
+        document.getElementById("editId").value = id;
+        document.getElementById("ServiceName").value = name;
+        document.getElementById("urlEdit").value = imageURL;
+        document.getElementById("publicIdEdit").value = imageId;
+        document.getElementById("editDisplayMedia").innerHTML = `<img class="form-control" height="350px" src="${imageURL}" alt=""/> `;
+        document.getElementById("myTextarea").value = description;
+
+        document.getElementById("EServiceType").value = type;
+
+    }
+    function setIdDelete(id) {
+        document.getElementById("deleteId").value = id;
+    }
+
+
+
+
+
+    function uploadImage() {
+        const url = "https://api.cloudinary.com/v1_1/del4xfgjr/image/upload/";
+        const finishButton = document.getElementById("uploadButton");
+        const files = document.getElementById("uploadedMedia").files;
+        const formData = new FormData();
+
+        let file = files[0];
+        formData.append("file", file);
+        formData.append("upload_preset", "odrfogc6");
+        formData.append("folder", "da-net7");
+
+        fetch(url, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    finishButton.innerHTML = "Failed";
+                    finishButton.classList.replace("btn-success", "btn-danger")
+                    return;
+                }
+                return response.text();
+            })
+            .then((data) => {
+                finishButton.innerHTML = "Done";
+                const json = JSON.parse(data);
+                const media = document.getElementById("displayMedia");
+
+
+                document.getElementById("url").value = json.url
+                document.getElementById("publicId").value = json.public_id
+                document.getElementById("AddMediaButton").disabled = false;
+
+
+
+                media.innerHTML = `<img class="form-control" height="350px" src="${json.url}" alt=""/> `;
+
+            });
+    }
+
+
+
+
+
+
+
+    function EditImage() {
+        const url = "https://api.cloudinary.com/v1_1/del4xfgjr/image/upload/";
+        const finishButton = document.getElementById("editUploadButton");
+
+        const files = document.getElementById("editUploadedMedia").files;
+        let file = files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "odrfogc6");
+        formData.append("folder", "da-net7");
+
+        fetch(url, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    finishButton.innerHTML = "Failed";
+                    finishButton.classList.replace("btn-success", "btn-danger")
+                    return;
+                }
+                return response.text();
+            })
+            .then((data) => {
+                finishButton.innerHTML = "Done";
+
+                const json = JSON.parse(data);
+                const media = document.getElementById("editDisplayMedia");
+                document.getElementById("urlEdit").value = json.url
+                document.getElementById("publicIdEdit").value = json.public_id
+
+                document.getElementById("EditMediaButton").disabled = false;
+
+
+                media.innerHTML = `<img class="form-control" height="350px" src="${json.url}" alt=""/> `;
+
+            });
+    }
+</script>
+
+
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
