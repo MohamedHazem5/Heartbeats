@@ -16,13 +16,28 @@ namespace Heartbeats.Controllers
             _context = context;
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 5)
         {
-            var blogs = await _context.Blogs.ToListAsync();
+            // Get total count of blogs
+            var totalBlogs = await _context.Blogs.CountAsync();
+
+            // Calculate total pages
+            var totalPages = (int)Math.Ceiling(totalBlogs / (double)pageSize);
+
+            // Get blogs for the current page
+            var blogs = await _context.Blogs
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Pass categories and pagination info to the view
             ViewBag.Categories = await _context.Categories.ToListAsync();
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
 
             return View(blogs);
         }
+
         [AllowAnonymous]
 
         public async Task<IActionResult> Details(int id)
@@ -51,7 +66,7 @@ namespace Heartbeats.Controllers
         public async Task<IActionResult> ByCategory(int categoryId)
         {
             var category = await _context.Categories.FindAsync(categoryId);
-            if (category == null)
+            if (category == null) 
             {
                 return NotFound();
             }

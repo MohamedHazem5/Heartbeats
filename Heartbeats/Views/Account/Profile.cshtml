@@ -426,7 +426,7 @@
                 <div class="bio-graph-heading">
                     @if (isDoctor)
                     {
-                        <p style="color:white;">@Model.Bio</p>
+                        <p style="color:white;">@Html.Raw(Model.Bio)</p>
                     }
                     else
                     {

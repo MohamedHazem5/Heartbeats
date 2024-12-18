@@ -29,13 +29,20 @@ namespace Heartbeats.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            if (!ModelState.IsValid) return View(loginDto);
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
-            if (user == null) return RedirectToAction("Login", "Account");
-            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, true, false);
-            if (!result.Succeeded) return View(loginDto);
+            try
+            {
+                if (!ModelState.IsValid) return View(loginDto);
+                var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
+                if (user == null) return RedirectToAction("Login", "Account");
+                var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, true, false);
+                if (!result.Succeeded) return View(loginDto);
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                return View(loginDto);
+            }
         }
 
         [HttpGet]

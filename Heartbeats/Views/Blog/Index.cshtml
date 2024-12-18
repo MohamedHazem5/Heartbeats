@@ -5,7 +5,137 @@
     ViewBag.Title = "المدونات"; // Model name in Arabic
 
 }
+<head>
+    <style>
+        /* Blog List Layout */
+        .blog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin-top: 10px;
+        }
+        .blog-card__category {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            background-color: #2563eb;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        /* Blog Card Component */
+.blog-card {
+    display: flex;
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out;
+    height: 200px;
+    width: 100%;
+}
 
+.blog-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Image Container */
+.blog-card__image-container {
+    position: relative;
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.blog-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Category Badge */
+.blog-card__category {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    background-color: #2563eb;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    z-index: 1;
+}
+
+/* Content Section */
+.blog-card__content {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.blog-card__title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.blog-card__title a:hover {
+    color: #2563eb;
+}
+
+.blog-card__meta {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.blog-card__description {
+    color: #4b5563;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+/* Read More Link */
+.blog-card__read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    margin-top: auto;
+}
+
+.blog-card__read-more:hover {
+    color: #1d4ed8;
+}
+
+.blog-card__read-more svg {
+    transition: transform 0.2s ease;
+}
+
+.blog-card__read-more:hover svg {
+    transform: translateX(4px);
+}
+
+
+    </style>
+</head>
 
 <!-- قسم المدونة -->
 <section class="blog-section style-four section" dir="rtl">
@@ -57,14 +187,62 @@
             <!-- المحتوى الرئيسي -->
             <div class="col-lg-9 order-lg-0 text-right">
                 <div class="left-side ">
+                    <div class="container">
                     <!-- عنصر مدونة -->
                     @foreach (var item in Model)
                     {
-                        <div class="item-holder">
+                       
+                            <div class="blog-list">
+                                <!-- Blog Card 1 -->
+                                <article class="blog-card">
+                                    <div class="blog-card__image-container">
+                                        <img src="@item.ImageUrl"
+                                             alt="@item.Title"
+                                             class="blog-card__image"
+                                             loading="lazy">
+                                        <span class="blog-card__category">@item.Category.Name</span>
+                                    </div>
+                                    <div class="blog-card__content">
+                                        <h2 class="blog-card__title">
+                                            <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId">@item.Title</a>
+                                        </h2>
+                                        <div class="blog-card__meta">
+                                            @item.Author • @item.CreatedAt
+                                        </div>
+                                        <p class="blog-card__description">
+                                            @{
+                                                // Strip HTML tags
+                                                string plainText = Regex.Replace(item.Description, "<.*?>", string.Empty);
+
+                                                // Check if the length of plain text is less than or equal to 100
+                                                if (plainText.Length <= 100)
+                                                {
+                                                    @Html.Raw(plainText)
+                                                    // Output the full description
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw(plainText.Substring(0, 100) + "...")
+                                                    // Output truncated description
+                                                }
+                                            }
+                                        </p>
+                                        <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId" class="blog-card__read-more">
+                                            اقرأ المزيد
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M5 12h14M12 5l7 7-7 7" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </article>
+                            </div>
+
+                        @* <div class="item-holder">
                             <div class="image-box">
                                 <figure>
                                     <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId"><img loading="lazy" class="img-fluid" src="@item.ImageUrl" alt="@item.Title"></a>
                                 </figure>
+                                <span class="blog-card__category">@item.Category.Name</span>
                             </div>
                             <div class="content-text">
                                 <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId">
@@ -72,42 +250,48 @@
                                 </a>
                                 <span>@item.Author - @item.CreatedAt</span>
                                 <p>
-                                    @{
-                                        // Strip HTML tags
-                                        string plainText = Regex.Replace(item.Description, "<.*?>", string.Empty);
-
-                                        // Check if the length of plain text is less than or equal to 100
-                                        if (plainText.Length <= 100)
-                                        {
-                                            @Html.Raw(plainText)
-                                            // Output the full description
-                                        }
-                                        else
-                                        {
-                                            @Html.Raw(plainText.Substring(0, 100) + "...")
-                                            // Output truncated description
-                                        }
-                                    }
+                                   
                                 </p>
 
                                 <div class="link-btn">
                                     <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogId" class="btn-style-one">اقرأ المزيد</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> *@
                     }
- 
+                    </div>
                    
                     <!-- زر الترقيم -->
                     <div class="styled-pagination">
                         <ul>
-                            <li><a class="prev" href="blog.html"><span class="fas fa-angle-right" aria-hidden="true"></span></a></li>
-                            <li><a href="blog.html" class="active">1</a></li>
-                            <li><a href="blog.html">2</a></li>
-                            <li><a href="blog.html">3</a></li>
-                            <li><a class="next" href="blog.html"><span class="fas fa-angle-left" aria-hidden="true"></span></a></li>
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li>
+                                    <a class="prev" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })">
+                                        <span class="fas fa-angle-left" aria-hidden="true"></span>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <li>
+                                    <a class="@((i == ViewBag.CurrentPage) ? "active" : "")"
+                                       href="@Url.Action("Index", new { page = i })">@i</a>
+                                </li>
+                            }
+
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li>
+                                    <a class="next" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })">
+                                        <span class="fas fa-angle-right" aria-hidden="true"></span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>
