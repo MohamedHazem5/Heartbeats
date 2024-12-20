@@ -1,0 +1,323 @@
+﻿@model MedicationDto
+    <style>
+
+
+        /* .container { */
+        /*     max-width: 800px; */
+        /*     margin: 0 auto; */
+        /* } */
+
+        .index-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .index-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .index-button:hover {
+                background-color: #e0e0e0;
+            }
+
+            .index-button.active {
+                background-color: #2563eb;
+                color: white;
+            }
+
+        .names-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .name-item {
+            padding: 12px 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .name-item:last-child {
+                border-bottom: none;
+            }
+
+            .name-item:hover {
+                background-color: #f8f8f8;
+            }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-size {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .page-size select {
+                padding: 4px 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+        .page-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+            .page-button:hover {
+                background-color: #e0e0e0;
+            }
+
+            .page-button.active {
+                background-color: #2563eb;
+                color: white;
+            }
+
+            .page-button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+        .empty-message {
+            text-align: center;
+            padding: 32px;
+            color: #666;
+        }
+    </style>
+
+
+    <div class="container my-5">
+        <div class="text-center my-5">
+            <h3>الادوية</h3>
+        </div>
+        <div class="index-buttons">
+            <button class="index-button active" data-letter="All">All</button>
+        </div>
+        <div class="names-list"></div>
+        <div class="pagination">
+            <div class="page-size">
+                <label>Page size:</label>
+                <select id="pageSizeSelect">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="page-controls"></div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let string_names = '@Model.StringMedications';
+        let names = string_names.split("#$#");
+    // State
+    let currentLetter = 'All';
+    let currentPage = 1;
+    let pageSize = 10;
+
+    // Initialize
+    function init() {
+        createAlphabetButtons();
+        updateNamesList();
+        updatePagination();
+        addEventListeners();
+    }
+
+    // Create alphabet buttons
+    function createAlphabetButtons() {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const container = document.querySelector('.index-buttons');
+
+        alphabet.forEach(letter => {
+            const button = document.createElement('button');
+            button.className = 'index-button';
+            button.textContent = letter;
+            button.dataset.letter = letter;
+            container.appendChild(button);
+        });
+    }
+
+    // Update names list
+    function updateNamesList() {
+        const container = document.querySelector('.names-list');
+        const filteredNames = filterNames();
+        const paginatedNames = paginateNames(filteredNames);
+
+        container.innerHTML = '';
+
+        if (paginatedNames.length === 0) {
+            container.innerHTML = '<div class="empty-message">No names found for this letter</div>';
+            return;
+        }
+
+        paginatedNames.forEach(name => {
+            const div = document.createElement('div');
+            div.className = 'name-item';
+            div.textContent = name;
+            container.appendChild(div);
+        });
+    }
+
+    // Filter names based on selected letter
+    function filterNames() {
+        if (currentLetter === 'All') return names;
+        return names.filter(name => name.charAt(0).toUpperCase() === currentLetter);
+    }
+
+    // Paginate names
+    function paginateNames(filteredNames) {
+        const start = (currentPage - 1) * pageSize;
+        return filteredNames.slice(start, start + pageSize);
+    }
+
+    // Generate page numbers to display
+    function getPageNumbers(totalPages) {
+        const pages = [];
+        const maxButtons = 10;
+
+        // Always show first page
+        pages.push(1);
+
+        let startPage = Math.max(2, currentPage - 1);
+        let endPage = Math.min(totalPages - 1, currentPage + 8);
+
+        // Adjust if we're near the end
+        if (endPage - startPage < 8) {
+            startPage = Math.max(2, endPage - 8);
+        }
+
+        // Add ellipsis after first page if needed
+        if (startPage > 2) {
+            pages.push('...');
+        }
+
+        // Add page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+
+        // Add ellipsis before last page if needed
+        if (endPage < totalPages - 1) {
+            pages.push('...');
+        }
+
+        // Always show last page if there is more than one page
+        if (totalPages > 1) {
+            pages.push(totalPages);
+        }
+
+        return pages;
+    }
+
+    // Update pagination controls
+    function updatePagination() {
+        const container = document.querySelector('.page-controls');
+        const filteredNames = filterNames();
+        const totalPages = Math.ceil(filteredNames.length / pageSize);
+
+        container.innerHTML = '';
+
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.className = 'page-button';
+        prevButton.textContent = '←';
+        prevButton.disabled = currentPage === 1;
+        prevButton.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateUI();
+            }
+        };
+        container.appendChild(prevButton);
+
+        // Page numbers
+        const pageNumbers = getPageNumbers(totalPages);
+        pageNumbers.forEach(page => {
+            if (page === '...') {
+                const span = document.createElement('span');
+                span.className = 'page-ellipsis';
+                span.textContent = '...';
+                container.appendChild(span);
+            } else {
+                const button = document.createElement('button');
+                button.className = `page-button ${currentPage === page ? 'active' : ''}`;
+                button.textContent = page;
+                button.onclick = () => {
+                    currentPage = page;
+                    updateUI();
+                };
+                container.appendChild(button);
+            }
+        });
+
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.className = 'page-button';
+        nextButton.textContent = '→';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateUI();
+            }
+        };
+        container.appendChild(nextButton);
+    }
+
+    // Add event listeners
+    function addEventListeners() {
+        // Letter buttons
+        document.querySelector('.index-buttons').addEventListener('click', (e) => {
+            if (e.target.classList.contains('index-button')) {
+                document.querySelectorAll('.index-button').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                currentLetter = e.target.dataset.letter;
+                currentPage = 1;
+                updateUI();
+            }
+        });
+
+        // Page size select
+        document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
+            pageSize = parseInt(e.target.value);
+            currentPage = 1;
+            updateUI();
+        });
+    }
+
+    // Update UI
+    function updateUI() {
+        updateNamesList();
+        updatePagination();
+    }
+
+    // Initialize the app
+    init();
+</script>
