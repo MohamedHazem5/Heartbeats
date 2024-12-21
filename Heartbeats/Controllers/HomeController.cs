@@ -18,7 +18,7 @@ namespace Heartbeats.Controllers
         {
             return View();
         }
-        public IActionResult SugarScan()
+        public IActionResult DiabeticScan()
         {
             return View();
         }
