@@ -1,0 +1,223 @@
+﻿@section Scripts {
+    <script>
+        changeTheme('pink');
+    </script>
+}
+<style>
+    .container {
+        text-align: right;
+    }
+    .timeline-container {
+        position: relative;
+        padding: 0 3rem;
+    }
+
+    .timeline-scroll {
+        overflow-x: auto;
+        padding: 2rem 0;
+        direction: rtl;
+    }
+
+    .timeline {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        min-width: max-content;
+        padding: 0 1rem;
+        flex-direction: row-reverse;
+    }
+
+    .week-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .week-label {
+        color: #db2777;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .week-circle {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        color: #db2777;
+        font-weight: bold;
+        font-size: 1.25rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+    }
+
+    .week-button:hover .week-circle {
+        box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    .week-button.active {
+        transform: scale(1.1);
+    }
+
+        .week-button.active .week-circle {
+            background: #db2777;
+            color: white;
+        }
+
+    .nav-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #db2777;
+        transition: background-color 0.2s ease;
+    }
+
+        .nav-button:hover {
+            background: #fdf2f8;
+        }
+
+        .nav-button.prev {
+            right: 0;
+        }
+
+        .nav-button.next {
+            left: 0;
+        }
+
+    .week-info {
+        margin-top: 3rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+        .week-info h2 {
+            color: #db2777;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .week-info p {
+            color: #4b5563;
+        }
+
+    /* Scrollbar Styling */
+    .timeline-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .timeline-scroll::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .timeline-scroll::-webkit-scrollbar-thumb {
+        background: #ec4899;
+        border-radius: 3px;
+    }
+
+        .timeline-scroll::-webkit-scrollbar-thumb:hover {
+            background: #be185d;
+        }
+</style>
+
+<br />
+<br>
+    <div class="container" dir="rtl">
+        <h1>مراحل تطور الحمل والجنين خلال أسابيع الحمل</h1>
+
+        <div class="timeline-container">
+            <button class="nav-button prev" aria-label="الأسبوع السابق">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+            </button>
+
+            <div class="timeline-scroll">
+                <div class="timeline"></div>
+            </div>
+
+            <button class="nav-button next" aria-label="الأسبوع التالي">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+        </div>
+
+        <div class="week-info">
+            <h2>الأسبوع <span class="active-week">1</span></h2>
+            <p>معلومات عن تطور الجنين في الأسبوع <span class="active-week">1</span>...</p>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let activeWeek = 1;
+        const totalWeeks = 40;
+
+        // Create timeline weeks
+        const timeline = document.querySelector('.timeline');
+        for (let i = totalWeeks; i >= 1; i--) {
+            const weekButton = document.createElement('button');
+            weekButton.className = `week-button ${i === 1 ? 'active' : ''}`;
+            weekButton.innerHTML = `
+                  <div class="week-label">الأسبوع</div>
+                  <div class="week-circle">${i}</div>
+                `;
+            weekButton.addEventListener('click', () => setActiveWeek(i));
+            timeline.appendChild(weekButton);
+        }
+
+        // Navigation buttons
+        const prevButton = document.querySelector('.nav-button.prev');
+        const nextButton = document.querySelector('.nav-button.next');
+
+        prevButton.addEventListener('click', () => {
+            if (activeWeek > 1) {
+                setActiveWeek(activeWeek - 1);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (activeWeek < totalWeeks) {
+                setActiveWeek(activeWeek + 1);
+            }
+        });
+
+        function setActiveWeek(week) {
+            // Update active week
+            activeWeek = week;
+
+            // Update active button
+            document.querySelectorAll('.week-button').forEach((button, index) => {
+                button.classList.toggle('active', totalWeeks - index === week);
+            });
+
+            // Update week info
+            document.querySelectorAll('.active-week').forEach(span => {
+                span.textContent = week;
+            });
+
+            // Scroll active week into view
+            const activeButton = document.querySelector('.week-button.active');
+            activeButton.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+    });
+</script>
