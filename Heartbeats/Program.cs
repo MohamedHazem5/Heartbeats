@@ -1,5 +1,6 @@
 using Heartbeats.Extensions;
 using Heartbeats.Extentions;
+using Heartbeats.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddChatbotServices();
@@ -22,7 +23,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await ApplicationDbInitializer.SeedRolesAndAdminAsync(services);
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
