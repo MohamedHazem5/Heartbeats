@@ -2,7 +2,7 @@ using Heartbeats.Extensions;
 using Heartbeats.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddChatbotServices();
+//builder.Services.AddChatbotServices();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
