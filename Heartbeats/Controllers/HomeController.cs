@@ -19,12 +19,13 @@ namespace Heartbeats.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult FemaleIndex()
         {
+            ViewData["Theme"] = "pink"; 
+
             return View();
         }
-
-        public IActionResult Contact()
+        public IActionResult DiabeticScan()
         {
             return View();
         }

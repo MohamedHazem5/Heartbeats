@@ -19,10 +19,6 @@ namespace Models.Dtos
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "كلمة المرور غير متطابقة")]
-        public string ConfirmPassword { get; set; }
-
         public string Role { get; set; }
 
     }

@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="plugins/timePicker/timePicker.css">
 
     <!-- Stylesheets -->
-    <link href="css/style.css" rel="stylesheet">
+    <link id="theme-style" rel="stylesheet" href="/css/style.css?v=@DateTime.Now.Ticks" />
 
     <!--Favicon-->
     <link rel="icon" href="images/favicon1.png" type="image/x-icon">
@@ -242,7 +242,7 @@
                                 <a class="nav-link" asp-controller="Category" asp-action="Index">الفئات</a>
                             </li>
                             <li class="nav-item @@team">
-                                <a class="nav-link" href="team.html">فحص مرض السكر</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="DiabeticScan">فحص مرض السكر</a>
                             </li>
                             <li class="nav-item @@gallery">
                                 <a class="nav-link" asp-controller="Specialty" asp-action="Index">احجز طبيبك</a>
@@ -257,7 +257,7 @@
                                 <a class="nav-link" asp-controller="Home" asp-action="Index">الصفحة الرئيسية</a>
                             </li>
                             <li class="nav-item @@team">
-                                <a class="nav-link" href="team.html">فحص مرض السكر</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="DiabeticScan">فحص مرض السكر</a>
                             </li>
                             <li class="nav-item @@gallery">
                                 <a class="nav-link" asp-controller="Specialty" asp-action="Index">احجز طبيبك</a>
@@ -270,6 +270,9 @@
                             </li>
                             <li class="nav-item @@blogs">
                                 <a class="nav-link" asp-controller="Blog" asp-action="ByCategory" asp-route-categoryId="7">النفسية والادمان</a>
+                            </li>
+                            <li class="nav-item @@blogs">
+                                <a class="nav-link" asp-controller="Home" asp-action="FemaleIndex">الحمل والولادة</a>
                             </li>
 
                             <li class="nav-item @@blogs">
@@ -294,7 +297,7 @@
                             <div class="about-widget">
                                 <div class="footer-logo">
                                     <figure>
-                                        <a href="index.html">
+                                        <a asp-controller="Home" asp-action="Index">
                                             <img loading="lazy" class="img-fluid" src="images/logo-3.png" alt="medic">
                                         </a>
                                     </figure>
@@ -360,6 +363,18 @@
     <div class="scroll-to-top scroll-to-target" data-target=".header-top">
         <span class="icon fa fa-angle-up"></span>
     </div>
+    <script>
+        function changeTheme(theme) {
+            const themeStyle = document.getElementById('theme-style');
+            if (theme === 'pink') {
+                themeStyle.setAttribute('href', '/css/stylePink.css');
+            } else {
+                themeStyle.setAttribute('href', '/css/style.css');
+            }
+        }
+    </script>
+    <!-- Render the Scripts section -->
+    @RenderSection("Scripts", required: false)
 
 
     <script src="https://sweet-field-6485.ploomber.app/copilot/index.js"></script>

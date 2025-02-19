@@ -9,4 +9,5 @@ namespace Heartbeats.Models
         public string Title { get; set; }
         public string SetId { get; set; }
     }
+
 }

@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Chatbot\" />
+    <Folder Include="DiabeticModel\" />
     <Folder Include="wwwroot\login\" />
   </ItemGroup>
 

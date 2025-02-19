@@ -78,6 +78,7 @@ namespace Heartbeats.Controllers
             ViewBag.CategoryName = category.Name; // Display category name in the view
             return View("CategoryBlogs", blogs);
         }
+
         public async Task<IActionResult> List()
         {
             var blogs = await _context.Blogs.ToListAsync();
