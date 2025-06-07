@@ -5,12 +5,12 @@ import chainlit as cl
 
 @cl.on_chat_start
 async def on_chat_start():
-    api_key = os.environ.get("GOOGLE_API_KEY")
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",api_key="AIzaSyBDoLFQh3AjmSOSgR21rg0t8yT8a7cUU38")
+    api_key="AIzaSyBDoLFQh3AjmSOSgR21rg0t8yT8a7cUU38"
+    model = ChatGoogleGenerativeAI(model="gemini-2.0-flash",api_key=api_key)
     prompt = ChatPromptTemplate.from_messages(
         [
             (
-                "system",
+                "human",
                 """
 أنت مساعد ذكي لتطبيق الويب نبضات قلب، المتخصص في تسهيل حجز المواعيد مع الأطباء المتخصصين وتقديم مقالات طبية مفيدة وموثوقة. دورك هو مساعدة المستخدمين في تحديد التخصص الطبي المناسب لاحتياجاتهم، والإجابة على استفساراتهم بأعلى مستوى من الدقة والاحترافية.
 
